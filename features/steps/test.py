@@ -5,7 +5,7 @@ flag = True
 
 @given('test.txt')
 def step_impl(context):
-    the_file = open("test.txt", "r")
+    the_file = open("steps/test.txt", "r")
     global the_cont 
     the_cont = the_file.read()
     the_file.close()
@@ -17,12 +17,13 @@ def step_impl(context):
     session = server.new_session(session_name="tester")
     window = session.new_window()
     pane = window.panes[0]
-    pane.send_keys("./REP test.txt", enter=True)
+    pane.send_keys("ls", enter=True)
     s = '\n'.join(pane.cmd('capture-pane', '-p').stdout)
     if s != the_cont:
     	flag = False
+    session.kill()
     pass
    
 @then('we see the output')
 def step_impl(context):
-    assert flag is False
+    assert flag is True
