@@ -1,5 +1,3 @@
-# Created by https://www.toptal.com/developers/gitignore/api/c++
-# Edit at https://www.toptal.com/developers/gitignore?templates=c++
 
 ### C++ ###
 # Prerequisites
@@ -35,7 +33,8 @@
 *.out
 *.app
 build/*
-# End of https://www.toptal.com/developers/gitignore/api/c++
+features/steps/REP 
+
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
