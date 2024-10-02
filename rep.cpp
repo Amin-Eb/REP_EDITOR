@@ -5,7 +5,9 @@
 #include <stdio.h>
 using namespace std;
 
-void init(); print_scr();                                                                                                                                  
+void print_scr();
+void init(); 
+                                                                                                                                 
 char ch;
 int row, col, y = 0, x = 0, LN = 0,the_start, the_end;
 string matn[1000];
