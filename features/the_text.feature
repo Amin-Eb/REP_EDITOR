@@ -1,4 +1,4 @@
-Feature: First tests
+Feature: showing the test
 
   Scenario: run a simple test
      Given test.txt
