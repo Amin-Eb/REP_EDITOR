@@ -29,7 +29,6 @@ def step_impl(context):
     flag = True
     the_file = open("steps/test.txt", "r")
     the_cont = the_file.readlines()
-    print(tmp)
 
     for i in range (0,24):
         if the_cont[i] != tmp[i] + '\n':
