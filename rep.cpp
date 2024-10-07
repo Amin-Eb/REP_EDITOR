@@ -1,136 +1,192 @@
-#include<iostream>
-#include<fstream>
-#include<string>
 #include <ncurses.h>
 #include <stdio.h>
+#include <fstream>
+#include <iostream>
+#include <string>
 using namespace std;
 
-void print_scr();
-void init(); 
-void LINE_UP();
-void LINE_DOWN();
-void RIGHT();
-void LEFT();
-void HOME();
-void PAGE_UP();
-void PAGE_DOWN();
-void END_PAGE();
-                                                                                                                                 
+void PrintScr();
+void Init();
+void LineUp();
+void LineDown();
+void Right();
+void Left();
+void Home();
+void PageUp();
+void PageDown();
+void EndPage();
+void NewLine();
+
 int ch;
-int row, col, y = 0, x = 0, LN = 0,the_start, the_end;
+int row, col, y = 0, x = 0, LN = 0, TheStart, TheEnd;
+int CurrentLine = 0;
 string matn[1000];
 
-int main(int argc,  char** argv){
-	init();
+int main(int argc, char** argv) {
+    Init();
 
-    ifstream file (argv[1]);
-    if(!file.is_open()) printw("Not such a file!\n");
-	string line;
-	while(getline(file,line)) matn[LN] = line.c_str(),LN++;
+    ifstream file(argv[1]);
+    if (!file.is_open())
+        printw("Not such a file!\n");
+    string line;
+    while (getline(file, line))
+        matn[LN] = line.c_str(), LN++;
 
-	mvchgat(y, x, -1, A_BLINK, 1, NULL);	
-	refresh();
-	print_scr();
-	move(0,0);
-	refresh();
+    mvchgat(y, x, -1, A_BLINK, 1, NULL);
+    refresh();
+    PrintScr();
+    move(0, 0);
+    refresh();
 
-	while(true){
-		ch = getch();
-		if(ch == KEY_DOWN)LINE_DOWN();
-		if(ch == KEY_UP)LINE_UP();
-		if(ch == KEY_LEFT)LEFT();
-		if(ch == KEY_RIGHT)RIGHT();
-		if(ch == KEY_HOME)HOME();
-		if(ch == KEY_NPAGE)PAGE_DOWN();
-		if(ch == KEY_PPAGE)PAGE_UP();
-		if(ch == KEY_END)END_PAGE();
-		refresh();
-	}
-	getch();
-	endwin();
-
-}
-
-void init(){
-	initscr();
-	noecho(); //   do not show the given characters from input
-	cbreak();
-	keypad(stdscr, TRUE);		/* We get F1, F2 etc..		*/
-	row = COLS;
-	col = LINES;
-	the_start = 0;
-	the_end = LINES - 1;
-}
-void print_scr(){
-	clear();
-	for(int i = the_start; i <= the_end; i ++) printw("%s\n", matn[i].c_str());
-	refresh();
-}
-void LINE_UP(){
-	if(y > 0){
-		y --;
-	}else if(y == 0){
-		if(LN-1 > LINES && the_start > 0) the_start --, the_end --, print_scr();
-	}
-	move(y,x);
-}
-void LINE_DOWN(){	
-	if(y == LN - 1) return;
-	if(y == LINES - 1){
-		if(the_end < LN - 1){
-			the_start ++; the_end ++;
-			print_scr();
-			move(y, x);
+    while (true) {
+        ch = getch();
+        if (ch == KEY_DOWN){
+            LineDown();
+			continue;
 		}
-	}else{
-		y ++;
-		move(y, x);
-	}
-}
-void RIGHT(){
-	if(x < COLS-1) x ++;
-	else if(x == COLS - 1){
-		if(y < LINES - 1)y ++, x = 0;
-		if(y == LINES -1){
-			if(the_end == LN -1) return;
-			x = 0, LINE_DOWN();
+        if (ch == KEY_UP){
+            LineUp();
+			continue;
 		}
-	}
-	move(y, x);
-}
-void LEFT(){
-	if(x > 0) x --, move(y, x);
-	else{
-		if(y > 0){
-			x = COLS - 1; y --;
-			move(y, x);
+        if (ch == KEY_LEFT){
+            Left();
+			continue;
 		}
-		else{
-			if(the_start == 0) return;
-			x = COLS - 1;
-			LINE_UP();
+        if (ch == KEY_RIGHT){
+            Right();
+			continue;
 		}
-	}
+        if (ch == KEY_HOME){
+            Home();
+			continue;
+		}
+        if (ch == KEY_NPAGE){
+            PageDown();
+			continue;
+		}
+        if (ch == KEY_PPAGE){
+            PageUp();
+			continue;
+		}
+        if (ch == KEY_END){
+            EndPage();
+			continue;
+		}
+		if (ch == 10){//Enter
+			NewLine();
+			continue;
+		}
+        refresh();
+    }
+    getch();
+    endwin();
 }
-void HOME(){
-	the_start = 0;
-	the_end = min(LN - 1, LINES - 1);
-	print_scr();
-	x = 0, y = 0;
-	move(y, x);
+
+void Init() {
+    initscr();
+    noecho();    //   do not show the given characters from input
+    cbreak();
+    keypad(stdscr, TRUE); /* We get F1, F2 etc..		*/
+    row = COLS;
+    col = LINES;
+    TheStart = 0;
+    TheEnd = LINES - 1;
 }
-void PAGE_UP(){
-	the_start = max(0, the_start - LINES);
-	the_end  = min(LN - 1, the_start + LINES - 1);
-	print_scr();
+void PrintScr() {
+    clear();
+    for (int i = TheStart; i <= TheEnd; i++)
+        printw("%s\n", matn[i].c_str());
+    refresh();
 }
-void PAGE_DOWN(){
-	the_end = min(LN - 1, the_end + LINES);
-	the_start = max(0, the_end - LINES + 1);
-	print_scr();
+void LineUp() {
+    if (y > 0) {
+        y--;
+		CurrentLine --;
+    } else if (y == 0) {
+        if (LN - 1 > LINES && TheStart > 0){
+            TheStart--;
+			TheEnd--;
+			CurrentLine --;
+			PrintScr();
+		}
+    }
+    move(y, x);
 }
-void END_PAGE(){
-	the_end = LN - 1;
-	the_start = max(0, the_end - LINES + 1);
-	print_scr();
+void LineDown() {
+    if (y == LN - 1)
+        return;
+    if (y == LINES - 1) {
+        if (TheEnd < LN - 1) {
+            TheStart++;
+            TheEnd++;
+			CurrentLine ++;
+            PrintScr();
+            move(y, x);
+        }
+    } else {
+        y++;
+		CurrentLine ++;
+		PrintScr();
+        move(y, x);
+    }
+}
+void Right() {
+
+    if (x < COLS - 1)
+        x++;
+    else if (x == COLS - 1) {
+        if (y < LINES - 1)
+            y++, x = 0;
+        if (y == LINES - 1) {
+            if (TheEnd == LN - 1)
+                return;
+            x = 0, LineDown();
+        }
+    }
+    move(y, x);
+}
+void Left() {
+    if (x > 0)
+        x--, move(y, x);
+    else {
+        if (y > 0) {
+            x = COLS - 1;
+            y--;
+            move(y, x);
+        } else {
+            if (TheStart == 0)
+                return;
+            x = COLS - 1;
+            LineUp();
+        }
+    }
+}
+void Home() {
+    TheStart = 0;
+    TheEnd = min(LN - 1, LINES - 1);
+    PrintScr();
+    x = 0, y = 0;
+    move(y, x);
+}
+void PageUp() {
+    TheStart = max(0, TheStart - LINES);
+    TheEnd = min(LN - 1, TheStart + LINES - 1);
+    PrintScr();
+}
+void PageDown() {
+    TheEnd = min(LN - 1, TheEnd + LINES);
+    TheStart = max(0, TheEnd - LINES + 1);
+    PrintScr();
+}
+void EndPage() {
+    TheEnd = LN - 1;
+    TheStart = max(0, TheEnd - LINES + 1);
+    PrintScr();
+}
+void NewLine() {
+	for(int i = LN; i > CurrentLine + 1; i --)
+		matn[i] = matn[i-1];
+	LN++;
+	matn[CurrentLine + 1] = "";
+	LineDown();
 }
