@@ -16,7 +16,7 @@ void PAGE_UP();
 void PAGE_DOWN();
 void END_PAGE();
                                                                                                                                  
-char ch;
+int ch;
 int row, col, y = 0, x = 0, LN = 0,the_start, the_end;
 string matn[1000];
 
@@ -36,15 +36,14 @@ int main(int argc,  char** argv){
 
 	while(true){
 		ch = getch();
-//		printw("%d",ch);
-		if(ch == 2)LINE_DOWN();
-		if(ch == 3)LINE_UP();
-		if(ch == 4)LEFT();
-		if(ch == 5)RIGHT();
-		if(ch == 6)HOME();
-		if(ch == 82)PAGE_DOWN();
-		if(ch == 83)PAGE_UP();
-		if(ch == 104)END_PAGE();
+		if(ch == KEY_DOWN)LINE_DOWN();
+		if(ch == KEY_UP)LINE_UP();
+		if(ch == KEY_LEFT)LEFT();
+		if(ch == KEY_RIGHT)RIGHT();
+		if(ch == KEY_HOME)HOME();
+		if(ch == KEY_NPAGE)PAGE_DOWN();
+		if(ch == KEY_PPAGE)PAGE_UP();
+		if(ch == KEY_END)END_PAGE();
 		refresh();
 	}
 	getch();
@@ -55,6 +54,7 @@ int main(int argc,  char** argv){
 void init(){
 	initscr();
 	noecho(); //   do not show the given characters from input
+	cbreak();
 	keypad(stdscr, TRUE);		/* We get F1, F2 etc..		*/
 	row = COLS;
 	col = LINES;

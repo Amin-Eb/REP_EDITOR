@@ -1,4 +1,4 @@
-Feature: showing the test
+Feature: showing the text
 
   Scenario: run a simple test
      Given test.txt
