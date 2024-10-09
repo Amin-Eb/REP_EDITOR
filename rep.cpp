@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include "src/Editor.h"
 using namespace std;
 
 void PrintScr();
