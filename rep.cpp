@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include "src/Editor.h"
+#include "src/File.h"
 using namespace std;
 
 void PrintScr();
