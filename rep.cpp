@@ -32,8 +32,9 @@ Editor Rep;
 int main(int argc, char** argv) {
 
     if ( RepFile.Open(argv[1], Rep) == false ){
-        RepScreen.PrintLine(0, 1,"Not such a file!\n");
-        getch();
+        RepFile.FileName = argv[1];
+        Rep.AddLine(0, " ");
+     //   RepFile.Save(Rep, RepScreen, false);
     }
     RepScreen.TheEnd = min(RepScreen.TheEnd, Rep.LN-1);
     RepScreen.PrintScr(Rep);
@@ -82,7 +83,7 @@ int main(int argc, char** argv) {
             continue;
         }
         if (ch == KEY_SHOME) {
-            RepFile.Save(Rep, RepScreen);
+            RepFile.Save(Rep, RepScreen, true);
             continue;
         }
         Insert(ch);
@@ -122,6 +123,8 @@ void LineDown() {
             RepScreen.Move(y, x);
         }
     } else {
+        if(Rep.LN - 1 < RepScreen.col - 1 && y == Rep.LN - 2)
+            RepScreen.TheEnd ++;
         y++;
         x = min(x, (int)(Rep.Matn[CurrentLine + 1].size())); x += 4;
         CurrentLine++;
