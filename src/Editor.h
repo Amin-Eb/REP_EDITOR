@@ -3,8 +3,6 @@ using namespace std;
 class Editor {
     public:
         int LN = 0;
-        int TheStart = 0;
-        int TheEnd = 0;
         string Matn[1000];
         void AddLine(int Line, string Str);
         void AddCharacter(int Line,int Position,char Character);

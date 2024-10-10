@@ -5,10 +5,9 @@
 #include <string>
 #include "src/Editor.h"
 #include "src/File.h"
+#include "src/Screen.h"
 using namespace std;
 
-void PrintScr();
-void Init();
 void LineUp();
 void LineDown();
 void Right();
@@ -22,27 +21,24 @@ void BackSpace();
 void Insert(char ch);
 
 int ch;
-int row, col, y = 0, x = 0, LN = 0, TheStart, TheEnd;
+int y = 0, x = 0;
 int CurrentLine = 0;
-string matn[1000];
+
+Screen RepScreen;
+File RepFile;
+Editor Rep;
 
 int main(int argc, char** argv) {
-    Init();
 
-    ifstream file(argv[1]);
-    if (!file.is_open()){
-        printw("Not such a file!\n");
-        refresh();
+    
+
+    if ( RepFile.Open(argv[1], Rep) == false ){
+        RepScreen.PrintLine(0, "Not such a file!\n");
+        getch();
     }
-    string line;
-    while (getline(file, line))
-        matn[LN] = line.c_str(), LN++;
 
-    mvchgat(y, x, -1, A_BLINK, 1, NULL);
-    refresh();
-    PrintScr();
-    move(0, 0);
-    refresh();
+    RepScreen.TheEnd = min(RepScreen.TheEnd, Rep.LN-1);
+    RepScreen.PrintScr(Rep);
 
     while (true) {
         ch = getch();
@@ -90,167 +86,152 @@ int main(int argc, char** argv) {
         refresh();
     }
     getch();
-    endwin();
+    RepScreen.EndScr();
 }
 
-void Init() {
-    initscr();
-    noecho();    //   do not show the given characters from input
-    cbreak();
-    keypad(stdscr, TRUE); /* We get F1, F2 etc..		*/
-    row = COLS;
-    col = LINES;
-    TheStart = 0;
-    TheEnd = LINES - 1;
-}
-void PrintScr() {
-    clear();
-    for (int i = TheStart; i <= TheEnd; i++)
-        printw("%s\n", matn[i].c_str());
-    refresh();
-}
+
 void LineUp() {
     if (y > 0) {
         y--;
-        x = min(x, (int)(matn[CurrentLine - 1].size()));
+        x = min(x, (int)(Rep.Matn[CurrentLine - 1].size()));
         CurrentLine--;
     } else if (y == 0) {
-        if (LN - 1 > LINES && TheStart > 0) {
-            TheStart--;
-            TheEnd--;
-            x = min(x, (int)(matn[CurrentLine - 1].size()));
+        if (Rep.LN - 1 > RepScreen.col && RepScreen.TheStart > 0) {
+            RepScreen.TheStart --;
+            RepScreen.TheEnd --;
+            x = min(x, (int)(Rep.Matn[CurrentLine - 1].size()));
             CurrentLine--;
-            PrintScr();
+            RepScreen.PrintScr(Rep);
         }
     }
-    move(y, x);
+    RepScreen.Move(y, x);
 }
 void LineDown() {
-    if (y == LN - 1)
+    if (y == Rep.LN - 1)
         return;
-    if (y == LINES - 1) {
-        if (TheEnd < LN - 1) {
-            TheStart++;
-            TheEnd++;
-            x = min(x, (int)(matn[CurrentLine + 1].size()));
+    if (y == RepScreen.col - 1) {
+        if (RepScreen.TheEnd < Rep.LN - 1) {
+            RepScreen.TheStart++;
+            RepScreen.TheEnd++;
+            x = min(x, (int)(Rep.Matn[CurrentLine + 1].size()));
             CurrentLine++;
-            PrintScr();
-            move(y, x);
+            RepScreen.PrintScr(Rep);
+            RepScreen.Move(y, x);
         }
     } else {
         y++;
-        x = min(x, (int)(matn[CurrentLine + 1].size()));
+        x = min(x, (int)(Rep.Matn[CurrentLine + 1].size()));
         CurrentLine++;
-        PrintScr();
-        move(y, x);
+        RepScreen.PrintScr(Rep);
+        RepScreen.Move(y, x);
     }
 }
 void Right() {
-    int _COLS = min((int)(matn[CurrentLine].size()), COLS - 1);
+    int _COLS = min((int)(Rep.Matn[CurrentLine].size()), RepScreen.row - 1);
     if (x < _COLS)
         x++;
-    move(y, x);
+    RepScreen.Move(y, x);
 }
 void Left() {
     if (x > 0)
-        x--, move(y, x);
+        x--, RepScreen.Move(y, x);
     else {
         if (y > 0) {
-            x = matn[CurrentLine - 1].size();
+            x = Rep.Matn[CurrentLine - 1].size();
             y--;
             CurrentLine--;
-            move(y, x);
+            RepScreen.Move(y, x);
         } else {
-            if (TheStart == 0)
+            if (RepScreen.TheStart == 0)
                 return;
-            x = COLS - 1;
+            x = RepScreen.row - 1;
             LineUp();
         }
     }
 }
 void Home() {
-    TheStart = 0;
-    TheEnd = min(LN - 1, LINES - 1);
-    PrintScr();
+    RepScreen.TheStart = 0;
+    RepScreen.TheEnd = min(Rep.LN - 1, RepScreen.col - 1);
+    RepScreen.PrintScr(Rep);
     x = 0, y = 0;
     CurrentLine = 0;
-    move(y, x);
+    RepScreen.Move(y, x);
 }
 void PageUp() {
-    TheStart = max(0, TheStart - LINES);
-    TheEnd = min(LN - 1, TheStart + LINES - 1);
-    CurrentLine = TheStart;
+    RepScreen.TheStart = max(0, RepScreen.TheStart - RepScreen.col);
+    RepScreen.TheEnd = min(Rep.LN - 1, RepScreen.TheStart + RepScreen.col - 1);
+    CurrentLine = RepScreen.TheStart;
     x = 0, y = 0;
-    PrintScr();
-    move(y, x);
+    RepScreen.PrintScr(Rep);
+    RepScreen.Move(y, x);
 }
 void PageDown() {
-    TheEnd = min(LN - 1, TheEnd + LINES);
-    TheStart = max(0, TheEnd - LINES + 1);
-    CurrentLine = TheStart;
+    RepScreen.TheEnd = min(Rep.LN - 1, RepScreen.TheEnd + RepScreen.col);
+    RepScreen.TheStart = max(0, RepScreen.TheEnd - RepScreen.col + 1);
+    CurrentLine = RepScreen.TheStart;
     x = 0, y = 0;
-    PrintScr();
-    move(y, x);
+    RepScreen.PrintScr(Rep);
+    RepScreen.Move(y, x);
 }
 void EndPage() {
-    TheEnd = LN - 1;
-    TheStart = max(0, TheEnd - LINES + 1);
-    CurrentLine = LN - 1;
-    PrintScr();
-    move(y, x);
+    RepScreen.TheEnd = Rep.LN - 1;
+    RepScreen.TheStart = max(0, RepScreen.TheEnd - RepScreen.col + 1);
+    CurrentLine = Rep.LN - 1;
+    RepScreen.PrintScr(Rep);
+    RepScreen.Move(y, x);
 }
 void Enter() {
-    for (int i = LN; i > CurrentLine + 1; i--)
-        matn[i] = matn[i - 1];
-    LN++;
-    matn[CurrentLine + 1] = "";
+    for (int i = Rep.LN; i > CurrentLine + 1; i--)
+        Rep.Matn[i] = Rep.Matn[i - 1];
+    Rep.LN++;
+    Rep.Matn[CurrentLine + 1] = "";
     if (x == 0) {
-        matn[CurrentLine + 1] = matn[CurrentLine];
-        matn[CurrentLine] = "";
+        Rep.Matn[CurrentLine + 1] = Rep.Matn[CurrentLine];
+        Rep.Matn[CurrentLine] = "";
     } else {
-        for (int i = x; i < matn[CurrentLine].size(); i++)
-            matn[CurrentLine + 1] += matn[CurrentLine][i];
+        for (int i = x; i < Rep.Matn[CurrentLine].size(); i++)
+            Rep.Matn[CurrentLine + 1] += Rep.Matn[CurrentLine][i];
         string TemperoryString = "";
         for (int i = 0; i < x; i++)
-            TemperoryString += matn[CurrentLine][i];
-        matn[CurrentLine] = TemperoryString;
+            TemperoryString += Rep.Matn[CurrentLine][i];
+        Rep.Matn[CurrentLine] = TemperoryString;
         x = 0;
     }
     LineDown();
-    PrintScr();
-    move(y, x);
+    RepScreen.PrintScr(Rep);
+    RepScreen.Move(y, x);
 }
 void BackSpace() {
     if (x == 0) {
         if (y == 0)
             return;
-        x = matn[CurrentLine - 1].size();
-        matn[CurrentLine - 1] += matn[CurrentLine];
-        matn[CurrentLine] = "";
+        x = Rep.Matn[CurrentLine - 1].size();
+        Rep.Matn[CurrentLine - 1] += Rep.Matn[CurrentLine];
+        Rep.Matn[CurrentLine] = "";
         LineUp();
-        PrintScr();
-        move(y, x);
+        RepScreen.PrintScr(Rep);
+        RepScreen.Move(y, x);
     } else {
         string TemperoryString = "";
         for (int i = 0; i < x - 1; i++)
-            TemperoryString += matn[CurrentLine][i];
-        for (int i = x; i < matn[CurrentLine].size(); i++)
-            TemperoryString += matn[CurrentLine][i];
-        matn[CurrentLine] = TemperoryString;
+            TemperoryString += Rep.Matn[CurrentLine][i];
+        for (int i = x; i < Rep.Matn[CurrentLine].size(); i++)
+            TemperoryString += Rep.Matn[CurrentLine][i];
+        Rep.Matn[CurrentLine] = TemperoryString;
         x--;
-        PrintScr();
-        move(y, x);
+        RepScreen.PrintScr(Rep);
+        RepScreen.Move(y, x);
     }
 }
 void Insert(char ch){
     string TemperoryString = "";
     for (int i = 0; i < x; i ++) 
-        TemperoryString += matn[CurrentLine][i];
+        TemperoryString += Rep.Matn[CurrentLine][i];
     TemperoryString += ch;
-    for (int i = x; i < matn[CurrentLine].size(); i ++)
-        TemperoryString += matn[CurrentLine][i];
-    matn[CurrentLine] = TemperoryString;
+    for (int i = x; i < Rep.Matn[CurrentLine].size(); i ++)
+        TemperoryString += Rep.Matn[CurrentLine][i];
+    Rep.Matn[CurrentLine] = TemperoryString;
     x ++;
-    PrintScr();
-    move(y, x);
+    RepScreen.PrintScr(Rep);
+    RepScreen.Move(y, x);
 }

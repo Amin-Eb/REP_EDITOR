@@ -5,18 +5,19 @@ class File {
         fstream TheFile;
         string FileName;
         void Save(Editor Edit);
-        bool Open(string Name, Editor Edit);
+        bool Open(string Name, Editor& Edit);
 };
 
-bool File::Open(string Name, Editor Edit){
+bool File::Open(string Name, Editor& Edit){
     FileName = Name;
     TheFile.open(Name);
     if (!TheFile.is_open()) return false;
     string line;
     while (getline(TheFile, line)){
-        Edit.Matn[Edit.LN] = line.c_str();
+        Edit.Matn[Edit.LN] = line;
         Edit.LN ++;
     }
+    TheFile.close();
     return true;
 }
 
