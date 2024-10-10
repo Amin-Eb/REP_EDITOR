@@ -21,7 +21,7 @@ class Screen {
 
         }
         void PrintScr(Editor Edit);
-        void PrintLine(int ScreenLine,string Str);
+        void PrintLine(int ScreenLine,int LineNumber, string Str);
         void PrintChar(int ScreenLine,int Position,char Character);
         void EndScr();
         void Move(int y,int x);
@@ -29,14 +29,28 @@ class Screen {
 
 void Screen::PrintScr(Editor Edit){
     clear();
-    for (int i = TheStart; i <= TheEnd; i++)
+    for (int i = TheStart; i <= TheEnd; i++){
+        start_color();
+        init_pair(1, COLOR_YELLOW, 0);
+        attron(COLOR_PAIR(1));
+        if(i+1 < 10)
+            printw("%c", ' ');
+        if(i+1 < 100)
+            printw("%c", ' ');
+        printw("%d ", i+1);
+        attroff(COLOR_PAIR(1));
         printw("%s\n", Edit.Matn[i].c_str());
-    move(0,0);
+    }
     refresh();
 }
 
-void Screen::PrintLine(int ScreenLine,string Str){
+void Screen::PrintLine(int ScreenLine,int LineNumber, string Str){
     move(ScreenLine, 0);
+    start_color();
+    init_pair(1, COLOR_YELLOW, 0);
+    attron(COLOR_PAIR(1));
+    printw("%d ", LineNumber);
+    attroff(COLOR_PAIR(1));
     printw("%s", Str.c_str());
     move(ScreenY, ScreenX);
 }
