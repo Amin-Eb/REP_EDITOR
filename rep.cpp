@@ -31,14 +31,13 @@ Editor Rep;
 
 int main(int argc, char** argv) {
 
-    if ( RepFile.Open(argv[1], Rep) == false ){
+    if (RepFile.Open(argv[1], Rep) == false) {
         RepFile.FileName = argv[1];
         Rep.AddLine(0, " ");
-     //   RepFile.Save(Rep, RepScreen, false);
     }
-    RepScreen.TheEnd = min(RepScreen.TheEnd, Rep.LN-1);
+    RepScreen.TheEnd = min(RepScreen.TheEnd, Rep.LN - 1);
     RepScreen.PrintScr(Rep);
-    move(0,4);
+    move(0, 4);
 
     while (ch != KEY_SEND) {
         ch = getch();
@@ -97,13 +96,15 @@ int main(int argc, char** argv) {
 void LineUp() {
     if (y > 0) {
         y--;
-        x = min(x, (int)(Rep.Matn[CurrentLine - 1].size())); x += 4;
+        x = min(x, (int)(Rep.Matn[CurrentLine - 1].size()));
+        x += 4;
         CurrentLine--;
     } else if (y == 0) {
         if (Rep.LN - 1 > RepScreen.col && RepScreen.TheStart > 0) {
-            RepScreen.TheStart --;
-            RepScreen.TheEnd --;
-            x = min(x, (int)(Rep.Matn[CurrentLine - 1].size())); x += 4;
+            RepScreen.TheStart--;
+            RepScreen.TheEnd--;
+            x = min(x, (int)(Rep.Matn[CurrentLine - 1].size()));
+            x += 4;
             CurrentLine--;
             RepScreen.PrintScr(Rep);
         }
@@ -117,16 +118,18 @@ void LineDown() {
         if (RepScreen.TheEnd < Rep.LN - 1) {
             RepScreen.TheStart++;
             RepScreen.TheEnd++;
-            x = min(x, (int)(Rep.Matn[CurrentLine + 1].size())); x += 4;
+            x = min(x, (int)(Rep.Matn[CurrentLine + 1].size()));
+            x += 4;
             CurrentLine++;
             RepScreen.PrintScr(Rep);
             RepScreen.Move(y, x);
         }
     } else {
-        if(Rep.LN - 1 < RepScreen.col - 1 && y == Rep.LN - 2)
-            RepScreen.TheEnd ++;
+        if (Rep.LN - 1 < RepScreen.col - 1 && y == Rep.LN - 2)
+            RepScreen.TheEnd++;
         y++;
-        x = min(x, (int)(Rep.Matn[CurrentLine + 1].size())); x += 4;
+        x = min(x, (int)(Rep.Matn[CurrentLine + 1].size()));
+        x += 4;
         CurrentLine++;
         RepScreen.PrintScr(Rep);
         RepScreen.Move(y, x);
@@ -223,9 +226,9 @@ void BackSpace() {
         RepScreen.Move(y, x);
     }
 }
-void Insert(char ch){
+void Insert(char ch) {
     Rep.AddCharacter(CurrentLine, x - 4, ch);
-    x ++;
+    x++;
     RepScreen.PrintScr(Rep);
     RepScreen.Move(y, x);
 }
