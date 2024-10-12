@@ -85,7 +85,7 @@ int main(int argc, char** argv) {
             RepFile.Save(Rep, RepScreen, true);
             continue;
         }
-        Insert(ch);
+        Insert((char)(ch));
         refresh();
     }
     RepScreen.EndScr();
