@@ -3,6 +3,7 @@ Checks:          'clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modern
 WarningsAsErrors: true
 HeaderFilterRegex: ''
 AnalyzeTemporaryDtors: false
+
 FormatStyle:     google
 CheckOptions:
   - key:             cert-dcl16-c.NewSuffixes

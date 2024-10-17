@@ -1,11 +1,14 @@
 using namespace std;
 
 class File {
-   public:
-    fstream TheFile;
-    string FileName;
-    void Save(Editor Edit, Screen Scr, bool flag);
-    bool Open(string Name, Editor& Edit);
+    private:
+        fstream TheFile = {};
+        string FileName = {};
+
+    public:
+        File(string FileName):FileName(std::move(FileName)){}
+        void Save(Editor Edit, Screen Scr, bool flag);
+        bool Open(string Name, Editor& Edit);
 };
 
 bool File::Open(string Name, Editor& Edit) {
@@ -13,7 +16,7 @@ bool File::Open(string Name, Editor& Edit) {
     TheFile.open(Name);
     if (!TheFile.is_open())
         return false;
-    string line;
+    std::string line("");
     while (getline(TheFile, line)) {
         Edit.Matn[Edit.LN] = line;
         Edit.LN++;

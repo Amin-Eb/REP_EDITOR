@@ -1,13 +1,13 @@
 using namespace std;
 
 class Editor {
-   public:
-    int LN = 0;
-    string Matn[1000];
-    void AddLine(int Line, string Str);
-    void AddCharacter(int Line, int Position, char Character);
-    void DeleteLine(int Line);
-    void DeleteCharacter(int Line, int Position);
+    public:
+        int LN = 0;
+        string* Matn = new string[1000];
+        void AddLine(int Line, string Str);
+        void AddCharacter(int Line, int Position, char Character);
+        void DeleteLine(int Line);
+        void DeleteCharacter(int Line, int Position);
 };
 
 void Editor::AddLine(int Line, string Str) {
@@ -18,7 +18,7 @@ void Editor::AddLine(int Line, string Str) {
 }
 
 void Editor::AddCharacter(int Line, int Position, char Character) {
-    string TemperoryString = "";
+    std::string TemperoryString("");
     for (int i = 0; i < Position; i++)
         TemperoryString += Matn[Line][i];
     TemperoryString += Character;
@@ -34,7 +34,7 @@ void Editor::DeleteLine(int Line) {
 }
 
 void Editor::DeleteCharacter(int Line, int Position) {
-    string TemperoryString = "";
+    std::string TemperoryString("");
     for (int i = 0; i < Position; i++)
         TemperoryString += Matn[Line][i];
     for (int i = Position + 1; i < Matn[Line].size(); i++)

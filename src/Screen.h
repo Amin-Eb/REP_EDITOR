@@ -1,40 +1,42 @@
 using namespace std;
 
+const int TwoDigits = 10;
+const int ThreeDigits = 100;
 class Screen {
-   public:
-    int row, col;
-    int TheStart = 0, TheEnd = 0;
-    int ScreenX = 0, ScreenY = 0;
-    Screen() {
-        initscr();
-        noecho();    //   do not show the given characters from input
-        cbreak();
-        keypad(stdscr, TRUE); /* We get F1, F2 etc..		*/
-        row = COLS;
-        col = LINES;
-        TheStart = 0;
-        TheEnd = LINES - 1;
-        ScreenX = 0;
-        ScreenY = 0;
-        mvchgat(ScreenY, ScreenX, -1, A_BLINK, 1, NULL);
-        refresh();
-    }
-    void PrintScr(Editor Edit);
-    void PrintLine(int ScreenLine, int LineNumber, string Str);
-    void PrintChar(int ScreenLine, int Position, char Character);
-    void EndScr();
-    void Move(int y, int x);
+    public:
+        int row = 0, col = 0;
+        int TheStart = 0, TheEnd = 0;
+        int ScreenX = 0, ScreenY = 0;
+        Screen() {
+            initscr();
+            noecho();    //   do not show the given characters from input
+            cbreak();
+            keypad(stdscr, TRUE); /* We get F1, F2 etc..		*/
+            mvchgat(ScreenY, ScreenX, -1, A_BLINK, 1, NULL);
+            refresh();
+        }
+        void Init();
+        void PrintScr(Editor Edit);
+        void PrintLine(int ScreenLine, int LineNumber, string Str);
+        void PrintChar(int ScreenLine, int Position, char Character);
+        void EndScr();
+        void Move(int y, int x);
 };
 
+void Screen::Init(){
+    row = COLS;
+    col = LINES;
+    TheEnd = LINES - 1;
+}
 void Screen::PrintScr(Editor Edit) {
     clear();
     for (int i = TheStart; i <= TheEnd; i++) {
         start_color();
         init_pair(1, COLOR_YELLOW, 0);
         attron(COLOR_PAIR(1));
-        if (i + 1 < 10)
+        if (i + 1 < TwoDigits)
             printw("%c", ' ');
-        if (i + 1 < 100)
+        if (i + 1 < ThreeDigits)
             printw("%c", ' ');
         printw("%d ", i + 1);
         attroff(COLOR_PAIR(1));
