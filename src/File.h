@@ -1,14 +1,14 @@
 using namespace std;
 
 class File {
-    private:
-        fstream TheFile = {};
-        string FileName = {};
+   private:
+    fstream TheFile = {};
+    string FileName = {};
 
-    public:
-        File(string FileName):FileName(std::move(FileName)){}
-        void Save(Editor Edit, Screen Scr, bool flag);
-        bool Open(string Name, Editor& Edit);
+   public:
+    File(string FileName) : FileName(std::move(FileName)) {}
+    void Save(Editor Edit, Screen Scr, bool flag);
+    bool Open(string Name, Editor& Edit);
 };
 
 bool File::Open(string Name, Editor& Edit) {
