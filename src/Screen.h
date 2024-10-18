@@ -25,8 +25,8 @@ class Screen {
 
 void Screen::Init() {
     row = COLS;
-    col = LINES;
-    TheEnd = LINES - 1;
+    col = LINES - 1;
+    TheEnd = LINES - 2;
 }
 void Screen::PrintScr(Editor Edit) {
     clear();
@@ -47,13 +47,13 @@ void Screen::PrintScr(Editor Edit) {
 
 void Screen::PrintLine(int ScreenLine, int LineNumber, string Str) {
     move(ScreenLine, 0);
-    start_color();
     init_pair(1, COLOR_YELLOW, 0);
     attron(COLOR_PAIR(1));
     printw("%d ", LineNumber);
     attroff(COLOR_PAIR(1));
     printw("%s", Str.c_str());
-    move(ScreenY, ScreenX);
+    refresh();
+    move(0,0);
 }
 
 void Screen::PrintChar(int ScreenLine, int Position, char Character) {
