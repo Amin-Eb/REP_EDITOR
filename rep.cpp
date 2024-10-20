@@ -108,7 +108,6 @@ int main(int argc, char** argv) {
         }
         if(mode == 1)
             Insert((char)(ch),CurrentLine, x, y, RepScreen, RepFile, Rep);
-        refresh();
     }
     RepScreen.EndScr();
     exit(0);

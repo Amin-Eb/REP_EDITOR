@@ -13,6 +13,7 @@ class Screen {
         cbreak();
         keypad(stdscr, TRUE); /* We get F1, F2 etc..		*/
         mvchgat(ScreenY, ScreenX, -1, A_BLINK, 1, NULL);
+        start_color();
         refresh();
     }
     void Init();
@@ -30,8 +31,8 @@ void Screen::Init() {
 }
 void Screen::PrintScr(Editor Edit) {
     clear();
-    for (int i = TheStart; i <= TheEnd; i++) {
-        start_color();
+    for (int i = TheStart, j = 0; i <= TheEnd; i++ , j ++) {
+        move(j, 0);
         init_pair(1, COLOR_YELLOW, 0);
         attron(COLOR_PAIR(1));
         if (i + 1 < TwoDigits)
@@ -40,7 +41,7 @@ void Screen::PrintScr(Editor Edit) {
             printw("%c", ' ');
         printw("%d ", i + 1);
         attroff(COLOR_PAIR(1));
-        printw("%s\n", Edit.Matn[i].c_str());
+        printw("%s", Edit.Matn[i].c_str());
     }
     refresh();
 }
@@ -49,11 +50,14 @@ void Screen::PrintLine(int ScreenLine, int LineNumber, string Str) {
     move(ScreenLine, 0);
     init_pair(1, COLOR_YELLOW, 0);
     attron(COLOR_PAIR(1));
+    if (LineNumber < TwoDigits)
+        printw("%c", ' ');
+    if (LineNumber < ThreeDigits)
+        printw("%c", ' ');
     printw("%d ", LineNumber);
     attroff(COLOR_PAIR(1));
     printw("%s", Str.c_str());
     refresh();
-    move(0,0);
 }
 
 void Screen::PrintChar(int ScreenLine, int Position, char Character) {
