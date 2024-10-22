@@ -52,6 +52,7 @@ int main(int argc, char** argv) {
         if (ch == KEY_ESC) {
             mode = 0;
             RepScreen.PrintLine(RepScreen.col, 0 , "entered normal mode!");
+            RepScreen.Refresh();
             continue;
         }
         if (ch == KEY_DOWN) {
@@ -104,6 +105,8 @@ int main(int argc, char** argv) {
         if (ch == KEY_BACKSPACE) {
             if(mode == 0)
                 RepNormal.SendKey(4,CurrentLine,x,y,RepScreen,Rep);
+            if(mode == 1)
+                RepInsert.SendKey(0,CurrentLine,x,y,RepScreen,Rep);
             continue;
         }
         if (ch == KEY_SHOME) {
@@ -113,6 +116,7 @@ int main(int argc, char** argv) {
         if(mode == 0 && (char)(ch) == 'i'){
             mode = 1;
             RepScreen.PrintLine(RepScreen.col, 0 , "entered insert mode!");
+            RepScreen.Refresh();
             continue;
         }
         if(mode == 1)

@@ -22,8 +22,12 @@ class Screen {
     void PrintChar(int ScreenLine, int Position, char Character);
     void EndScr();
     void Move(int y, int x);
+    void Refresh();
 };
 
+void Screen::Refresh(){
+    refresh();
+}
 void Screen::Init() {
     row = COLS;
     col = LINES - 1;
