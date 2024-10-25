@@ -25,7 +25,7 @@ class Screen {
     void Refresh();
 };
 
-void Screen::Refresh(){
+void Screen::Refresh() {
     refresh();
 }
 void Screen::Init() {
@@ -35,7 +35,7 @@ void Screen::Init() {
 }
 void Screen::PrintScr(Editor Edit) {
     clear();
-    for (int i = TheStart, j = 0; i <= TheEnd; i++ , j ++) {
+    for (int i = TheStart, j = 0; i <= TheEnd; i++, j++) {
         move(j, 0);
         init_pair(1, COLOR_YELLOW, 0);
         attron(COLOR_PAIR(1));

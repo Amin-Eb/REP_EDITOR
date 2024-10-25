@@ -1,38 +1,46 @@
 using namespace std;
 
-class Insert{
-    public:
-        void SendKey(int ch,int& CurrentLine,int& x,int& y,Screen& RepScreen, Editor& Rep);
-    private:
-        void Enter(int& CurrentLine,int& x,int& y,Screen& RepScreen, Editor& Rep);
-        void BackSpace(int& CurrentLine,int& x,int& y,Screen& RepScreen, Editor& Rep);
-        void NewChar(char ch,int& CurrentLine,int& x,int& y,Screen& RepScreen, Editor& Rep);
-        void LineDown(int& CurrentLine,int& x,int& y,Screen& RepScreen, Editor& Rep);
-        void LineUp(int& CurrentLine,int& x,int& y,Screen& RepScreen, Editor& Rep);
+class Insert {
+   public:
+    void SendKey(int ch, int& CurrentLine, int& x, int& y, Screen& RepScreen,
+                 Editor& Rep);
 
+   private:
+    void Enter(int& CurrentLine, int& x, int& y, Screen& RepScreen,
+               Editor& Rep);
+    void BackSpace(int& CurrentLine, int& x, int& y, Screen& RepScreen,
+                   Editor& Rep);
+    void NewChar(char ch, int& CurrentLine, int& x, int& y, Screen& RepScreen,
+                 Editor& Rep);
+    void LineDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,
+                  Editor& Rep);
+    void LineUp(int& CurrentLine, int& x, int& y, Screen& RepScreen,
+                Editor& Rep);
 };
 
-void Insert::SendKey(int ch,int& CurrentLine,int& x,int& y,Screen& RepScreen, Editor& Rep){
+void Insert::SendKey(int ch, int& CurrentLine, int& x, int& y,
+                     Screen& RepScreen, Editor& Rep) {
     if (ch == 10) {
-        Enter(CurrentLine,x,y,RepScreen,Rep);
+        Enter(CurrentLine, x, y, RepScreen, Rep);
         return;
     }
     if (ch == 0) {
-        BackSpace(CurrentLine,x,y,RepScreen,Rep);
+        BackSpace(CurrentLine, x, y, RepScreen, Rep);
         return;
     }
-    NewChar((char)(ch),CurrentLine,x,y,RepScreen,Rep);
+    NewChar((char)(ch), CurrentLine, x, y, RepScreen, Rep);
 }
 
-void Insert::NewChar(char ch,int& CurrentLine,int& x,int& y,Screen& RepScreen, Editor& Rep){
+void Insert::NewChar(char ch, int& CurrentLine, int& x, int& y,
+                     Screen& RepScreen, Editor& Rep) {
     Rep.AddCharacter(CurrentLine, x - 4, ch);
     x++;
     RepScreen.PrintLine(y, CurrentLine, Rep.Matn[CurrentLine]);
-    RepScreen.Refresh();
     move(y, x);
 }
 
-void Insert::LineDown(int& CurrentLine,int& x,int& y,Screen& RepScreen, Editor& Rep) {
+void Insert::LineDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,
+                      Editor& Rep) {
     if (y == Rep.LN - 1)
         return;
     if (y == RepScreen.col - 1) {
@@ -57,7 +65,8 @@ void Insert::LineDown(int& CurrentLine,int& x,int& y,Screen& RepScreen, Editor& 
     }
 }
 
-void Insert::LineUp(int& CurrentLine,int& x,int& y,Screen& RepScreen, Editor& Rep) {
+void Insert::LineUp(int& CurrentLine, int& x, int& y, Screen& RepScreen,
+                    Editor& Rep) {
     if (y > 0) {
         y--;
         x = min(x, (int)(Rep.Matn[CurrentLine - 1].size()));
@@ -76,7 +85,8 @@ void Insert::LineUp(int& CurrentLine,int& x,int& y,Screen& RepScreen, Editor& Re
     RepScreen.Move(y, x);
 }
 
-void Insert::Enter(int& CurrentLine,int& x,int& y,Screen& RepScreen, Editor& Rep){
+void Insert::Enter(int& CurrentLine, int& x, int& y, Screen& RepScreen,
+                   Editor& Rep) {
     Rep.AddLine(CurrentLine + 1, "");
     if (x == 4) {
         Rep.Matn[CurrentLine + 1] = Rep.Matn[CurrentLine];
@@ -90,19 +100,20 @@ void Insert::Enter(int& CurrentLine,int& x,int& y,Screen& RepScreen, Editor& Rep
         Rep.Matn[CurrentLine] = TemperoryString;
         x = 4;
     }
-    LineDown(CurrentLine,x,y,RepScreen, Rep);
+    LineDown(CurrentLine, x, y, RepScreen, Rep);
     RepScreen.PrintScr(Rep);
     RepScreen.Move(y, x);
 }
 
-void Insert::BackSpace(int& CurrentLine,int& x,int& y,Screen& RepScreen, Editor& Rep){
+void Insert::BackSpace(int& CurrentLine, int& x, int& y, Screen& RepScreen,
+                       Editor& Rep) {
     if (x == 4) {
         if (y == 0)
             return;
         Rep.Matn[CurrentLine - 1] += Rep.Matn[CurrentLine];
         x = Rep.Matn[CurrentLine - 1].size() + 4;
         Rep.DeleteLine(CurrentLine);
-        LineUp(CurrentLine,x,y,RepScreen,Rep);
+        LineUp(CurrentLine, x, y, RepScreen, Rep);
         RepScreen.PrintScr(Rep);
         RepScreen.Move(y, x);
     } else {

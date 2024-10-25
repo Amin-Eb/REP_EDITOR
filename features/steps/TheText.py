@@ -20,6 +20,9 @@ def step_impl(context):
     pane = window.panes[0]
     pane.send_keys("./steps/REP steps/test.txt", enter=True)
     tmp = pane.cmd('capture-pane', '-p').stdout
+    print(the_cont)
+    for i in range(0, 24):
+    	tmp[i] = tmp[i][4:]
     for i in range(0, 24):
     	if tmp[i]+'\n' != the_cont[i]:
     	    flag = False

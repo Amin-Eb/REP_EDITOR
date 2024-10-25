@@ -22,6 +22,8 @@ def step_impl(context):
     #testing pag-down key
     pane.send_keys("PageDown", enter=False)
     tmp = pane.cmd('capture-pane', '-p').stdout
+    for i in range(0, 24):
+    	tmp[i] = tmp[i][4:]
     for i in range(0,24):
         if tmp[i] != str(i + 25):
             flag = False
@@ -29,6 +31,8 @@ def step_impl(context):
     #testing page-up key
     pane.send_keys("PageUp", enter=False)
     tmp = pane.cmd('capture-pane', '-p').stdout
+    for i in range(0, 24):
+    	tmp[i] = tmp[i][4:]
     for i in range(0,24):
         if tmp[i] != str(i + 1):
             flag = False
@@ -36,6 +40,8 @@ def step_impl(context):
     #testing End-page key
     pane.send_keys("End", enter=False)
     tmp = pane.cmd('capture-pane', '-p').stdout
+    for i in range(0, 24):
+    	tmp[i] = tmp[i][4:]
     for i in range(0,24):
         if tmp[i] != str(i + 76):
             flag = False
