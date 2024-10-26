@@ -166,3 +166,5 @@ void Normal::Enter(int& CurrentLine, int& x, int& y, Screen& RepScreen,
     x = 4;
     move(y, x);
 }
+
+//test comment
