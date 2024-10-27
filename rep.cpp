@@ -34,7 +34,6 @@ void BackSpace(int& CurrentLine, int& x, int& y, Screen& RepScreen,
                File& RepFile, Editor& Rep);
 
 int main(int argc, char** argv) {
-
     auto args = std::span(argv, size_t(argc));
     int mode = 0;
     int ch = 0;
