@@ -18,10 +18,15 @@ jobs:
       - name: Installing cmake
         run: |
           sudo apt install cmake
+      - name: Installing behave
+        run: pip install git+https://github.com/behave/behave
+      - name: Installing libtmux
+        run: pip install --user libtmux
       - name: Building Project
         run: |
           mkdir build
           cd build
           cmake ..
           make
+     
       - run: echo "🍏 This job's status is ${{ job.status }}."
