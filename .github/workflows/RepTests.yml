@@ -28,5 +28,7 @@ jobs:
           cd build
           cmake ..
           make
-     
+      - name: Copying binary file
+        run: cp -i build/REP features/steps
+      - run: ls features/steps
       - run: echo "🍏 This job's status is ${{ job.status }}."
