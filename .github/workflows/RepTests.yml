@@ -24,4 +24,6 @@ jobs:
           cd build
           cmake ..
           make
+      - name: Installing behave
+        run: pip install git+https://github.com/behave/behave
       - run: echo "🍏 This job's status is ${{ job.status }}."
