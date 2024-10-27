@@ -15,4 +15,13 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
+      - name: Installing cmake
+        run: |
+          sudo apt install cmake
+      - name: Building Project
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          make
       - run: echo "🍏 This job's status is ${{ job.status }}."
