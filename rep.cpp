@@ -134,6 +134,7 @@ int main(int argc, char** argv) {
     }
     RepScreen.EndScr();
     exit(0);
+    exit(0);
 }
 
 //testing new branch actions 2
