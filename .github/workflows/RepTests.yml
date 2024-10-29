@@ -19,7 +19,7 @@ jobs:
         run: |
           sudo apt install cmake
       - name: Installing behave
-        run: pip install git+https://github.com/behave/behave
+        run: pip install behave
       - name: Installing libtmux
         run: pip install --user libtmux
       - name: Building Project
