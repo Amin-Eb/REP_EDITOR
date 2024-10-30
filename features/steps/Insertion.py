@@ -33,8 +33,7 @@ def step_impl(context):
     the_cont = the_file.readlines()
     for i in range (0,13):
     	tmp[i] = str(tmp[i][4:])
-    print(tmp)
-    print(the_cont)
+
     for i in range (0,13):
         if the_cont[i] != tmp[i] + '\n':
             flag = False
