@@ -35,7 +35,7 @@ void Insert::NewChar(char ch, int& CurrentLine, int& x, int& y,
                      Screen& RepScreen, Editor& Rep) {
     Rep.AddCharacter(CurrentLine, x - 4, ch);
     x++;
-    RepScreen.PrintLine(y, CurrentLine, Rep.Matn[CurrentLine]);
+    RepScreen.PrintLine(y, CurrentLine + 1, Rep.Matn[CurrentLine]);
     move(y, x);
 }
 

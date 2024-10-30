@@ -17,12 +17,15 @@ bool File::Open(string Name, Editor& Edit) {
     if (!TheFile.is_open())
         return false;
     std::string line("");
+    bool flag = 0;
     while (getline(TheFile, line)) {
         Edit.Matn[Edit.LN] = line;
         Edit.LN++;
+        flag = 1;
     }
+
     TheFile.close();
-    return true;
+    return flag;
 }
 
 void File::Save(Editor Edit, Screen& Scr, bool flag) {
