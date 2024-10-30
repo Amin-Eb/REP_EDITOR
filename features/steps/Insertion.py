@@ -34,6 +34,7 @@ def step_impl(context):
     for i in range (0,13):
     	tmp[i] = str(tmp[i][4:])
     print(the_cont)
+    print(tmp)
     for i in range (0,13):
         if the_cont[i] != tmp[i] + '\n':
             flag = False
