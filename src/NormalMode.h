@@ -81,8 +81,6 @@ void Normal::LineDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,
             RepScreen.Move(y, x);
         }
     } else {
-        if (Rep.LN - 1 < RepScreen.col - 1 && y == Rep.LN - 2)
-            RepScreen.TheEnd++;
         y++;
         x = min(x, (int)(Rep.Matn[CurrentLine + 1].size()));
         x += 4;
@@ -95,6 +93,8 @@ void Normal::LineDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,
 void Normal::Right(int& CurrentLine, int& x, int& y, Screen& RepScreen,
                    Editor& Rep) {
     int _COLS = min((int)(Rep.Matn[CurrentLine].size()) + 4, RepScreen.row - 1);
+    if(Rep.Matn[CurrentLine][Rep.Matn[CurrentLine].size() - 1] == ' ') 
+        x --;
     if (x < _COLS)
         x++;
     RepScreen.Move(y, x);

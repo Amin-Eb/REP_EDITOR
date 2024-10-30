@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
 
     if (RepFile.Open(args[1], Rep) == false) {
 
-        Rep.AddLine(0, " ");
+        Rep.AddLine(0, "");
     }
     RepScreen.TheEnd = min(RepScreen.TheEnd, Rep.LN - 1);
     RepScreen.PrintScr(Rep);
@@ -133,7 +133,6 @@ int main(int argc, char** argv) {
             RepInsert.SendKey(ch, CurrentLine, x, y, RepScreen, Rep);
     }
     RepScreen.EndScr();
-    exit(0);
     exit(0);
 }
 
