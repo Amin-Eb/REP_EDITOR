@@ -23,6 +23,10 @@ def step_impl(context):
     global tmp
     tmp = pane.cmd('capture-pane', '-p').stdout
     pane.send_keys("S-Home", enter = False)
+    aa = libtmux.common.EnvironmentMixin()
+    bb = session.show_environment()
+    for cc in bb :
+    	print(bb)
     session.kill()
     pass
    
@@ -35,6 +39,7 @@ def step_impl(context):
     #	tmp[i] = str(tmp[i][4:])
     print(the_cont)
     print(tmp)
+   
     for i in range (0,13):
         if the_cont[i] != tmp[i] + '\n':
             flag = False
