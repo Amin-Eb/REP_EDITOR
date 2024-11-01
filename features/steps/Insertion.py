@@ -25,7 +25,8 @@ def step_impl(context):
     pane.send_keys("S-Home", enter = False)
     aa = libtmux.common.EnvironmentMixin()
     session.set_environment('DISPLAY','0')
-    bb = session.show_environment()
+    session.set_environment('DISPLAY','0')
+    session.set_environment('XAUTHORITY', '/run/user/1000/gdm/Xauthority')
     for cc in bb :
     	print(bb)
     session.kill()
