@@ -24,6 +24,7 @@ def step_impl(context):
     tmp = pane.cmd('capture-pane', '-p').stdout
     pane.send_keys("S-Home", enter = False)
     aa = libtmux.common.EnvironmentMixin()
+    session.set_environment('DISPLAY','0')
     bb = session.show_environment()
     for cc in bb :
     	print(bb)
@@ -35,8 +36,8 @@ def step_impl(context):
     flag = True
     the_file = open("steps/test.txt", "r")
     the_cont = the_file.readlines()
-    #for i in range (0,13):
-    #	tmp[i] = str(tmp[i][4:])
+    for i in range (0,13):
+    	tmp[i] = str(tmp[i][4:])
     print(the_cont)
     print(tmp)
    
