@@ -1,8 +1,8 @@
-{'DISPLAY': '0', '-KRB5CCNAME': True, '-SSH_AGENT_PID': True, '-SSH_ASKPASS': True, '-SSH_AUTH_SOCK': True, '-SSH_CONNECTION': True, '-WINDOWID': True, '-XAUTHORITY': True}
-      {'DISPLAY': '0', '-KRB5CCNAME': True, '-SSH_AGENT_PID': True, '-SSH_ASKPASS': True, '-SSH_AUTH_SOCK': True, '-SSH_CONNECTION': True, '-WINDOWID': True, '-XAUTHORITY': True}
-      {'DISPLAY': '0', '-KRB5CCNAME': True, '-SSH_AGENT_PID': True, '-SSH_ASKPASS': True, '-SSH_AUTH_SOCK': True, '-SSH_CONNECTION': True, '-WINDOWID': True, '-XAUTHORITY': True}
-      {'DISPLAY': '0', '-KRB5CCNAME': True, '-SSH_AGENT_PID': True, '-SSH_ASKPASS': True, '-SSH_AUTH_SOCK': True, '-SSH_CONNECTION': True, '-WINDOWID': True, '-XAUTHORITY': True}
-      {'DISPLAY': '0', '-KRB5CCNAME': True, '-SSH_AGENT_PID': True, '-SSH_ASKPASS': True, '-SSH_AUTH_SOCK': True, '-SSH_CONNECTION': True, '-WINDOWID': True, '-XAUTHORITY': True}
-      {'DISPLAY': '0', '-KRB5CCNAME': True, '-SSH_AGENT_PID': True, '-SSH_ASKPASS': True, '-SSH_AUTH_SOCK': True, '-SSH_CONNECTION': True, '-WINDOWID': True, '-XAUTHORITY': True}
-      {'DISPLAY': '0', '-KRB5CCNAME': True, '-SSH_AGENT_PID': True, '-SSH_ASKPASS': True, '-SSH_AUTH_SOCK': True, '-SSH_CONNECTION': True, '-WINDOWID': True, '-XAUTHORITY': True}
-      {'DISPLAY': '0', '-KRB5CCNAME': True, '-SSH_AGENT_PID': True, '-SSH_ASKPASS': True, '-SSH_AUTH_SOCK': True, '-SSH_CONNECTION': True, '-WINDOWID': True, '-XAUTHORITY': True}
+{'DISPLAY': '0', '-KRB5CCNAME': True, '-SSH_AGENT_PID': True, '-SSH_ASKPASS': True, '-SSH_AUTH_SOCK': True, '-SSH_CONNECTION': True, '-WINDOWID': True, 'XAUTHORITY': '/run/user/1000/gdm/Xauthority'}
+      {'DISPLAY': '0', '-KRB5CCNAME': True, '-SSH_AGENT_PID': True, '-SSH_ASKPASS': True, '-SSH_AUTH_SOCK': True, '-SSH_CONNECTION': True, '-WINDOWID': True, 'XAUTHORITY': '/run/user/1000/gdm/Xauthority'}
+      {'DISPLAY': '0', '-KRB5CCNAME': True, '-SSH_AGENT_PID': True, '-SSH_ASKPASS': True, '-SSH_AUTH_SOCK': True, '-SSH_CONNECTION': True, '-WINDOWID': True, 'XAUTHORITY': '/run/user/1000/gdm/Xauthority'}
+      {'DISPLAY': '0', '-KRB5CCNAME': True, '-SSH_AGENT_PID': True, '-SSH_ASKPASS': True, '-SSH_AUTH_SOCK': True, '-SSH_CONNECTION': True, '-WINDOWID': True, 'XAUTHORITY': '/run/user/1000/gdm/Xauthority'}
+      {'DISPLAY': '0', '-KRB5CCNAME': True, '-SSH_AGENT_PID': True, '-SSH_ASKPASS': True, '-SSH_AUTH_SOCK': True, '-SSH_CONNECTION': True, '-WINDOWID': True, 'XAUTHORITY': '/run/user/1000/gdm/Xauthority'}
+      {'DISPLAY': '0', '-KRB5CCNAME': True, '-SSH_AGENT_PID': True, '-SSH_ASKPASS': True, '-SSH_AUTH_SOCK': True, '-SSH_CONNECTION': True, '-WINDOWID': True, 'XAUTHORITY': '/run/user/1000/gdm/Xauthority'}
+      {'DISPLAY': '0', '-KRB5CCNAME': True, '-SSH_AGENT_PID': True, '-SSH_ASKPASS': True, '-SSH_AUTH_SOCK': True, '-SSH_CONNECTION': True, '-WINDOWID': True, 'XAUTHORITY': '/run/user/1000/gdm/Xauthority'}
+      {'DISPLAY': '0', '-KRB5CCNAME': True, '-SSH_AGENT_PID': True, '-SSH_ASKPASS': True, '-SSH_AUTH_SOCK': True, '-SSH_CONNECTION': True, '-WINDOWID': True, 'XAUTHORITY': '/run/user/1000/gdm/Xauthority'}
