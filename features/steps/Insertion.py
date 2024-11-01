@@ -31,7 +31,7 @@ def step_impl(context):
     flag = True
     the_file = open("steps/test.txt", "r")
     the_cont = the_file.readlines()
-    for i in range (0,13):
+    #for i in range (0,13):
     #	tmp[i] = str(tmp[i][4:])
     print(the_cont)
     print(tmp)
