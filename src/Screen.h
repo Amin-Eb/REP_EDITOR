@@ -1,6 +1,7 @@
 using namespace std;
 
 const int TwoDigits = 10;
+
 const int ThreeDigits = 100;
 class Screen {
    public:

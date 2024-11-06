@@ -53,6 +53,7 @@ int main(int argc, char** argv) {
 
         Rep.AddLine(0, "");
     }
+
     RepScreen.TheEnd = min(RepScreen.TheEnd, Rep.LN - 1);
     RepScreen.PrintScr(Rep);
     move(0, 4);
@@ -135,5 +136,3 @@ int main(int argc, char** argv) {
     RepScreen.EndScr();
     exit(0);
 }
-
-//testing new branch actions 2
