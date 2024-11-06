@@ -29,6 +29,10 @@ void Insert::SendKey(int ch, int& CurrentLine, int& x, int& y,
         return;
     }
     NewChar((char)(ch), CurrentLine, x, y, RepScreen, Rep);
+    if (ch == '{')
+        Rep.Ident[CurrentLine] ++;
+    if (ch == '}')
+        Rep.Ident[CurrentLine] --;
 }
 
 void Insert::NewChar(char ch, int& CurrentLine, int& x, int& y,
@@ -87,14 +91,18 @@ void Insert::LineUp(int& CurrentLine, int& x, int& y, Screen& RepScreen,
 
 void Insert::Enter(int& CurrentLine, int& x, int& y, Screen& RepScreen,
                    Editor& Rep) {
-    Rep.AddLine(CurrentLine + 1, "");
+    string TemperoryString = "";
+    Rep.Ident[CurrentLine + 1] = Rep.Ident[CurrentLine];
+    for (int i = 0; i < Rep.Ident[CurrentLine]; i ++)
+        TemperoryString += " ";
+    Rep.AddLine(CurrentLine + 1, TemperoryString);
     if (x == 4) {
         Rep.Matn[CurrentLine + 1] = Rep.Matn[CurrentLine];
         Rep.Matn[CurrentLine] = "";
     } else {
         for (int i = x - 4; i < Rep.Matn[CurrentLine].size(); i++)
             Rep.Matn[CurrentLine + 1] += Rep.Matn[CurrentLine][i];
-        string TemperoryString = "";
+        TemperoryString = "";
         for (int i = 0; i < x - 4; i++)
             TemperoryString += Rep.Matn[CurrentLine][i];
         Rep.Matn[CurrentLine] = TemperoryString;
