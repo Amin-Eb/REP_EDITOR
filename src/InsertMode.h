@@ -37,6 +37,15 @@ void Insert::SendKey(int ch, int& CurrentLine, int& x, int& y,
 
 void Insert::NewChar(char ch, int& CurrentLine, int& x, int& y,
                      Screen& RepScreen, Editor& Rep) {
+    if(ch == 9){ // supporting Tab key
+        for(int i = 0; i < 4; i ++){
+            Rep.AddCharacter(CurrentLine, x - 4, ' ');
+            x ++;
+        }
+         RepScreen.PrintLine(y, CurrentLine + 1, Rep.Matn[CurrentLine]);
+        move(y, x);
+        return;
+    }
     Rep.AddCharacter(CurrentLine, x - 4, ch);
     x++;
     RepScreen.PrintLine(y, CurrentLine + 1, Rep.Matn[CurrentLine]);
