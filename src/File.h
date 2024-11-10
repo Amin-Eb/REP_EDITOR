@@ -19,6 +19,13 @@ bool File::Open(string Name, Editor& Edit) {
     std::string line("");
     bool flag = 0;
     while (getline(TheFile, line)) {
+        Edit.Ident[Edit.LN] = Edit.Ident[max(0,Edit.LN - 1)];
+        for (auto cch : line){
+            if(cch == '{')
+                Edit.Ident[Edit.LN] += 4;
+            if(cch == '}')
+                Edit.Ident[Edit.LN] -= 4;
+        }
         Edit.Matn[Edit.LN] = line;
         Edit.LN++;
         flag = 1;

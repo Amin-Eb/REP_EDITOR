@@ -30,9 +30,9 @@ void Insert::SendKey(int ch, int& CurrentLine, int& x, int& y,
     }
     NewChar((char)(ch), CurrentLine, x, y, RepScreen, Rep);
     if (ch == '{')
-        Rep.Ident[CurrentLine] ++;
+        Rep.Ident[CurrentLine] += 4;
     if (ch == '}')
-        Rep.Ident[CurrentLine] --;
+        Rep.Ident[CurrentLine] -= 4;
 }
 
 void Insert::NewChar(char ch, int& CurrentLine, int& x, int& y,
@@ -92,9 +92,12 @@ void Insert::LineUp(int& CurrentLine, int& x, int& y, Screen& RepScreen,
 void Insert::Enter(int& CurrentLine, int& x, int& y, Screen& RepScreen,
                    Editor& Rep) {
     string TemperoryString = "";
-    Rep.Ident[CurrentLine + 1] = Rep.Ident[CurrentLine];
     for (int i = 0; i < Rep.Ident[CurrentLine]; i ++)
         TemperoryString += " ";
+
+    for (int i = Rep.LN; i > CurrentLine; i--)
+        Rep.Ident[i] = Rep.Ident[i - 1];
+
     Rep.AddLine(CurrentLine + 1, TemperoryString);
     if (x == 4) {
         Rep.Matn[CurrentLine + 1] = Rep.Matn[CurrentLine];
@@ -106,7 +109,6 @@ void Insert::Enter(int& CurrentLine, int& x, int& y, Screen& RepScreen,
         for (int i = 0; i < x - 4; i++)
             TemperoryString += Rep.Matn[CurrentLine][i];
         Rep.Matn[CurrentLine] = TemperoryString;
-        x = 4;
     }
     LineDown(CurrentLine, x, y, RepScreen, Rep);
     RepScreen.PrintScr(Rep);
@@ -125,6 +127,11 @@ void Insert::BackSpace(int& CurrentLine, int& x, int& y, Screen& RepScreen,
         RepScreen.PrintScr(Rep);
         RepScreen.Move(y, x);
     } else {
+        if( Rep.Matn[CurrentLine][x - 4 - 1] == '}')
+            Rep.Ident[CurrentLine] += 4;
+        if( Rep.Matn[CurrentLine][x - 4 - 1] == '{')
+            Rep.Ident[CurrentLine] -= 4;
+
         Rep.DeleteCharacter(CurrentLine, x - 4 - 1);
         x--;
         RepScreen.PrintScr(Rep);

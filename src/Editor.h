@@ -5,6 +5,10 @@ class Editor {
     int LN = 0;
     int Ident[1000];
     string* Matn = new string[1000];
+    Editor(){
+        for (int i = 0; i < 1000; i ++)
+            Ident[i] = 0;
+    }
     void AddLine(int Line, string Str);
     void AddCharacter(int Line, int Position, char Character);
     void DeleteLine(int Line);
