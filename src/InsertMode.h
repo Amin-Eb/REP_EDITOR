@@ -34,7 +34,7 @@ void Insert::SendKey(int ch, int& CurrentLine, int& x, int& y,
     if (ch == '}')
         Rep.Ident[CurrentLine] --;
 
-    // :)
+    // :()
 }
 
 void Insert::NewChar(char ch, int& CurrentLine, int& x, int& y,
