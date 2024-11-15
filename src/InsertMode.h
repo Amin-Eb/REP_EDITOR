@@ -103,10 +103,10 @@ void Insert::Enter(int& CurrentLine, int& x, int& y, Screen& RepScreen,
     for (int i = 0; i < Rep.Ident[CurrentLine]; i ++)
         TemperoryString += " ";
 
-    for (int i = Rep.LN; i > CurrentLine; i--)
-        Rep.Ident[i] = Rep.Ident[i - 1];
 
     Rep.AddLine(CurrentLine + 1, TemperoryString);
+    for (int i = Rep.LN; i > CurrentLine; i--)
+        Rep.Ident[i] = Rep.Ident[i - 1];
     if (x == 4) {
         Rep.Matn[CurrentLine + 1] = Rep.Matn[CurrentLine];
         Rep.Matn[CurrentLine] = "";
@@ -126,7 +126,7 @@ void Insert::Enter(int& CurrentLine, int& x, int& y, Screen& RepScreen,
 void Insert::BackSpace(int& CurrentLine, int& x, int& y, Screen& RepScreen,
                        Editor& Rep) {
     if (x == 4) {
-        if (y == 0)
+        if (CurrentLine == 0)
             return;
         Rep.Matn[CurrentLine - 1] += Rep.Matn[CurrentLine];
         x = Rep.Matn[CurrentLine - 1].size() + 4;
