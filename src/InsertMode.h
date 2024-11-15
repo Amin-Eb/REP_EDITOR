@@ -34,7 +34,6 @@ void Insert::SendKey(int ch, int& CurrentLine, int& x, int& y,
     if (ch == '}')
         Rep.Ident[CurrentLine] -= 4;
 }
-//:)
 void Insert::NewChar(char ch, int& CurrentLine, int& x, int& y,
                      Screen& RepScreen, Editor& Rep) {
     if(ch == 9){ // supporting Tab key
