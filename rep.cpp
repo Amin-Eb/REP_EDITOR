@@ -41,6 +41,7 @@ int main(int argc, char** argv) {
     int CurrentLine = 0;
     const int Enter_Key = 10;
     const int KEY_ESC = 27;
+    MEVENT event;
 
     Screen RepScreen;
     RepScreen.Init();
@@ -57,9 +58,19 @@ int main(int argc, char** argv) {
     RepScreen.TheEnd = min(RepScreen.TheEnd, Rep.LN - 1);
     RepScreen.PrintScr(Rep);
     move(0, 4);
-
+    mousemask(ALL_MOUSE_EVENTS, NULL);
     while (ch != KEY_SEND) {
         ch = getch();
+        if(getmouse(&event) == OK){
+            if(event.bstate & BUTTON1_CLICKED){
+                move(event.y, event.x);
+                y = event.y;
+                x = event.x;
+                refresh();
+                CurrentLine = RepScreen.TheStart + event.y;
+            }
+            continue;
+        }
         if (ch == KEY_ESC) {
             mode = 0;
             RepScreen.PrintLine(RepScreen.col, 0, "entered normal mode!");
