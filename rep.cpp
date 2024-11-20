@@ -41,6 +41,8 @@ int main(int argc, char** argv) {
     int CurrentLine = 0;
     const int Enter_Key = 10;
     const int KEY_ESC = 27;
+    mouseinterval(0);
+    mousemask(ALL_MOUSE_EVENTS, NULL);
     MEVENT event;
 
     Screen RepScreen;
@@ -49,6 +51,8 @@ int main(int argc, char** argv) {
     Editor Rep;
     Normal RepNormal;
     Insert RepInsert;
+    init_pair(1, COLOR_YELLOW, 0);
+    init_pair(2, COLOR_BLACK, COLOR_WHITE);
 
     if (RepFile.Open(args[1], Rep) == false) {
 
@@ -61,15 +65,35 @@ int main(int argc, char** argv) {
     mousemask(ALL_MOUSE_EVENTS, NULL);
     while (ch != KEY_SEND) {
         ch = getch();
-        if(getmouse(&event) == OK){
-            if(event.bstate & BUTTON1_CLICKED){
-                move(event.y, event.x);
-                y = event.y;
-                x = event.x;
-                refresh();
-                CurrentLine = RepScreen.TheStart + event.y;
+        if(ch == KEY_MOUSE) {
+            if(getmouse(&event) == OK){
+                if(event.bstate & BUTTON1_CLICKED){
+                    move(event.y, event.x);
+                    y = event.y;
+                    x = event.x;
+                    refresh();
+                    CurrentLine = RepScreen.TheStart + event.y;
+                    continue;
+                }
+                if(event.bstate & BUTTON1_PRESSED){
+                    ch = getch();
+                    int y2, x2;
+                    y2 = event.y;
+                    x2 = event.x;
+                    CurrentLine = RepScreen.TheStart + event.y;
+                    while(true){
+                        if(getmouse(&event) == OK){
+                            if(event.bstate & BUTTON1_RELEASED){  
+                                y = event.y;
+                                x = event.x;
+                                RepScreen.Highlight(y2, CurrentLine,x2 , y2, x, y, Rep);
+                                break;
+                            }
+                        }
+                    }
+                }
+                continue;
             }
-            continue;
         }
         if (ch == KEY_ESC) {
             mode = 0;

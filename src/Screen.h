@@ -24,6 +24,7 @@ class Screen {
     void EndScr();
     void Move(int y, int x);
     void Refresh();
+    string Highlight(int& ScreenLine, int& LineNumber, int& x, int& y, int& x2, int& y2, Editor& Rep);
 };
 
 void Screen::Refresh() {
@@ -38,7 +39,6 @@ void Screen::PrintScr(Editor Edit) {
     clear();
     for (int i = TheStart, j = 0; i <= TheEnd; i++, j++) {
         move(j, 0);
-        init_pair(1, COLOR_YELLOW, 0);
         attron(COLOR_PAIR(1));
         if (i + 1 < TwoDigits)
             printw("%c", ' ');
@@ -53,7 +53,6 @@ void Screen::PrintScr(Editor Edit) {
 
 void Screen::PrintLine(int ScreenLine, int LineNumber, string Str) {
     move(ScreenLine, 0);
-    init_pair(1, COLOR_YELLOW, 0);
     attron(COLOR_PAIR(1));
     if (LineNumber < TwoDigits)
         printw("%c", ' ');
@@ -76,5 +75,21 @@ void Screen::EndScr() {
 }
 
 void Screen::Move(int y, int x) {
-    move(y, x);
+    move(y, x); 
+}
+
+string Screen::Highlight(int& ScreenLine, int& CurrentLine, int& x, int& y, int& x2, int& y2, Editor& Rep){
+    //printw("few %d %d %d %d %d few",x, y, x2, y2, CurrentLine);
+    attron(COLOR_PAIR(2));
+    string RetString("");
+    for(int i = y; i <= y2; i ++, CurrentLine ++, ScreenLine ++){
+        for(int j = (i == y? x : 4); j < (i == y2? x2 : Rep.Matn[CurrentLine].size()+3); j ++){
+            move(y, j);
+            RetString += Rep.Matn[CurrentLine][j - 4];
+            printw("%c", Rep.Matn[CurrentLine][j - 4]);
+        }
+        RetString += '\n';
+    }
+    attroff(COLOR_PAIR(2));
+    return RetString;
 }
