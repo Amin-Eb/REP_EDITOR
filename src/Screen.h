@@ -83,7 +83,7 @@ string Screen::Highlight(int& ScreenLine, int& CurrentLine, int& x, int& y, int&
     attron(COLOR_PAIR(2));
     string RetString("");
     for(int i = y; i <= y2; i ++, CurrentLine ++, ScreenLine ++){
-        for(int j = (i == y? x : 4); j < (i == y2? x2 : Rep.Matn[CurrentLine].size()+3); j ++){
+        for(int j = (i == y? x : 4); j <= (i == y2? x2 : Rep.Matn[CurrentLine].size()+3); j ++){
             move(y, j);
             RetString += Rep.Matn[CurrentLine][j - 4];
             printw("%c", Rep.Matn[CurrentLine][j - 4]);
