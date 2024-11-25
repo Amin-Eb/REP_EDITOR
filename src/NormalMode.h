@@ -50,15 +50,13 @@ void Normal::LineUp(int& CurrentLine, int& x, int& y, Screen& RepScreen,
                     Editor& Rep) {
     if (y > 0) {
         y--;
-        x = min(x, (int)(Rep.Matn[CurrentLine - 1].size()));
-        x += 4;
+        x = min(x, (int)(Rep.Matn[CurrentLine - 1].size()) + 4);
         CurrentLine--;
     } else if (y == 0) {
         if (Rep.LN - 1 > RepScreen.col && RepScreen.TheStart > 0) {
             RepScreen.TheStart--;
             RepScreen.TheEnd--;
-            x = min(x, (int)(Rep.Matn[CurrentLine - 1].size()));
-            x += 4;
+            x = min(x, (int)(Rep.Matn[CurrentLine - 1].size()) + 4);
             CurrentLine--;
             RepScreen.PrintScr(Rep);
         }
@@ -74,16 +72,14 @@ void Normal::LineDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,
         if (RepScreen.TheEnd < Rep.LN - 1) {
             RepScreen.TheStart++;
             RepScreen.TheEnd++;
-            x = min(x, (int)(Rep.Matn[CurrentLine + 1].size()));
-            x += 4;
+            x = min(x, (int)(Rep.Matn[CurrentLine + 1].size()) + 4);
             CurrentLine++;
             RepScreen.PrintScr(Rep);
             RepScreen.Move(y, x);
         }
     } else {
         y++;
-        x = min(x, (int)(Rep.Matn[CurrentLine + 1].size()));
-        x += 4;
+        x = min(x, (int)(Rep.Matn[CurrentLine + 1].size()) + 4);
         CurrentLine++;
         RepScreen.PrintScr(Rep);
         RepScreen.Move(y, x);
