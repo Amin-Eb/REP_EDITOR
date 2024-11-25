@@ -35,6 +35,7 @@ void BackSpace(int& CurrentLine, int& x, int& y, Screen& RepScreen,
 
 int main(int argc, char** argv) {
     auto args = std::span(argv, size_t(argc));
+    // 0 normal /1 insert /2 selected
     int mode = 0;
     int ch = 0;
     int y = 0, x = 4;
@@ -97,6 +98,7 @@ int main(int argc, char** argv) {
         }
         if (ch == KEY_ESC) {
             mode = 0;
+          //    RepScreen.PrintScr(Rep);
             RepScreen.PrintLine(RepScreen.col, 0, "entered normal mode!");
             RepScreen.Refresh();
             continue;
