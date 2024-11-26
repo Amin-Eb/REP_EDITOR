@@ -39,6 +39,7 @@ int main(int argc, char** argv) {
     int mode = 0;
     int ch = 0;
     int y = 0, x = 4;
+    int y2, x2;
     int CurrentLine = 0;
     const int Enter_Key = 10;
     const int KEY_ESC = 27;
@@ -62,10 +63,19 @@ int main(int argc, char** argv) {
 
     RepScreen.TheEnd = min(RepScreen.TheEnd, Rep.LN - 1);
     RepScreen.PrintScr(Rep);
-    move(0, 4);
     mousemask(ALL_MOUSE_EVENTS, NULL);
     while (ch != KEY_SEND) {
         ch = getch();
+        if(mode == 2){
+            if(ch == 'y'){
+                continue;
+            }
+            if(ch == 'd'){
+                continue;
+            }
+            RepScreen.PrintScr(Rep);
+            mode = 0;
+        }
         if(ch == KEY_MOUSE) {
             if(getmouse(&event) == OK){
                 if(event.bstate & BUTTON1_CLICKED){
@@ -78,7 +88,6 @@ int main(int argc, char** argv) {
                 }
                 if(event.bstate & BUTTON1_PRESSED){
                     ch = getch();
-                    int y2, x2;
                     y2 = event.y;
                     x2 = event.x;
                     CurrentLine = RepScreen.TheStart + event.y;
@@ -92,15 +101,15 @@ int main(int argc, char** argv) {
                             }
                         }
                     }
+                    mode = 2;
                 }
                 continue;
             }
         }
         if (ch == KEY_ESC) {
             mode = 0;
-          //    RepScreen.PrintScr(Rep);
-            RepScreen.PrintLine(RepScreen.col, 0, "entered normal mode!");
-            RepScreen.Refresh();
+            RepScreen.PrintScr(Rep);
+            RepScreen.PrintLine(RepScreen.col, 0, "entered normal mode!");      
             continue;
         }
         if (ch == KEY_DOWN) {
