@@ -24,7 +24,8 @@ class Screen {
     void EndScr();
     void Move(int y, int x);
     void Refresh();
-    string Highlight(int& ScreenLine, int& LineNumber, int& x, int& y, int& x2, int& y2, Editor& Rep);
+    void Normal(int ScreenLine, int& LineNumber, int& x, int& y, int& x2, int& y2, Editor& Rep);
+    string Highlight(int ScreenLine, int& LineNumber, int& x, int& y, int& x2, int& y2, Editor& Rep);
 };
 
 void Screen::Refresh() {
@@ -60,6 +61,7 @@ void Screen::PrintLine(int ScreenLine, int LineNumber, string Str) {
         printw("%c", ' ');
     printw("%d ", LineNumber);
     attroff(COLOR_PAIR(1));
+    for(int i = 0; i < row - Str.size(); i ++) Str += " ";
     printw("%s", Str.c_str());
     refresh();
 }
@@ -78,7 +80,7 @@ void Screen::Move(int y, int x) {
     move(y, x); 
 }
 
-string Screen::Highlight(int& ScreenLine, int& CurrentLine, int& x, int& y, int& x2, int& y2, Editor& Rep){
+string Screen::Highlight(int ScreenLine, int& CurrentLine, int& x, int& y, int& x2, int& y2, Editor& Rep){
     //printw("few %d %d %d %d %d few",x, y, x2, y2, CurrentLine);
     attron(COLOR_PAIR(2));
     string RetString("");
@@ -91,6 +93,7 @@ string Screen::Highlight(int& ScreenLine, int& CurrentLine, int& x, int& y, int&
         }
         RetString += '\n';
     }
+    CurrentLine --;
     attroff(COLOR_PAIR(2));
     return RetString;
 }
