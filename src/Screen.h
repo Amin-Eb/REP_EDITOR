@@ -13,6 +13,8 @@ class Screen {
         noecho();    //   do not show the given characters from input
         cbreak();
         keypad(stdscr, TRUE); /* We get F1, F2 etc..		*/
+        mouseinterval(0);
+        mousemask(ALL_MOUSE_EVENTS, NULL);
         mvchgat(ScreenY, ScreenX, -1, A_BLINK, 1, NULL);
         start_color();
         refresh();

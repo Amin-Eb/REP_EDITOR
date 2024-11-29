@@ -6,3 +6,5 @@ include_directories(${CURSES_INCLUDE_DIR})
 
 add_executable(REP rep.cpp)
 target_link_libraries(REP ${CURSES_LIBRARIES})
+add_subdirectory(clip)
+target_link_libraries(REP clip)
