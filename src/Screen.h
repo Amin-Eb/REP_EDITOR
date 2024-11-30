@@ -51,6 +51,7 @@ void Screen::PrintScr(Editor Edit) {
         attroff(COLOR_PAIR(1));
         printw("%s", Edit.Matn[i].c_str());
     }
+    move(0,4);
     refresh();
 }
 

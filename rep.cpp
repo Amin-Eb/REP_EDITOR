@@ -84,6 +84,10 @@ int main(int argc, char** argv) {
                 if(event.bstate == 2097152)
                     RepNormal.SendKey(2, CurrentLine, x, y, RepScreen, Rep);
                 if(event.bstate & BUTTON1_CLICKED){
+                    if(event.x < 4)
+                        event.x = 4;
+                    if(event.x > Rep.Matn[CurrentLine].size() + 4)
+                        event.x = Rep.Matn[CurrentLine].size() + 4;
                     move(event.y, event.x);
                     y = event.y;
                     x = event.x;
@@ -92,6 +96,8 @@ int main(int argc, char** argv) {
                     continue;
                 }
                 if(event.bstate & BUTTON1_PRESSED){
+                    if(event.x < 4 || event.x > Rep.Matn[CurrentLine].size() + 4)
+                        continue;
                     ch = getch();
                     y2 = event.y;
                     x2 = event.x;
