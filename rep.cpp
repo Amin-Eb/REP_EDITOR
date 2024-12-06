@@ -1,4 +1,5 @@
 #include <ncurses.h>
+#include <cstring>
 #include <cstdio>
 #include <fstream>
 #include <iostream>
@@ -9,6 +10,7 @@
 #include "src/File.h"
 #include "src/NormalMode.h"
 #include "src/InsertMode.h"
+#include "src/ClipBoard.h"
 
 using namespace std;
 
@@ -41,10 +43,9 @@ int main(int argc, char** argv) {
     int y = 0, x = 4;
     int y2, x2;
     int CurrentLine = 0;
+    string SelectedString;
     const int Enter_Key = 10;
     const int KEY_ESC = 27;
-    mouseinterval(0);
-    mousemask(ALL_MOUSE_EVENTS, NULL);
     MEVENT event;
 
     Screen RepScreen;
@@ -53,11 +54,11 @@ int main(int argc, char** argv) {
     Editor Rep;
     Normal RepNormal;
     Insert RepInsert;
+    ClipBoard RepClip;
     init_pair(1, COLOR_YELLOW, 0);
     init_pair(2, COLOR_BLACK, COLOR_WHITE);
 
     if (RepFile.Open(args[1], Rep) == false) {
-
         Rep.AddLine(0, "");
     }
 
@@ -78,7 +79,15 @@ int main(int argc, char** argv) {
         }
         if(ch == KEY_MOUSE) {
             if(getmouse(&event) == OK){
+                if(event.bstate == 65536)
+                    RepNormal.SendKey(1, CurrentLine, x, y, RepScreen, Rep);
+                if(event.bstate == 2097152)
+                    RepNormal.SendKey(2, CurrentLine, x, y, RepScreen, Rep);
                 if(event.bstate & BUTTON1_CLICKED){
+                    if(event.x < 4)
+                        event.x = 4;
+                    if(event.x > Rep.Matn[CurrentLine].size() + 4)
+                        event.x = Rep.Matn[CurrentLine].size() + 4;
                     move(event.y, event.x);
                     y = event.y;
                     x = event.x;
@@ -87,6 +96,8 @@ int main(int argc, char** argv) {
                     continue;
                 }
                 if(event.bstate & BUTTON1_PRESSED){
+                    if(event.x < 4 || event.x > Rep.Matn[CurrentLine].size() + 4)
+                        continue;
                     ch = getch();
                     y2 = event.y;
                     x2 = event.x;
