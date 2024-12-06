@@ -15,7 +15,8 @@ class Syntax{
                 Ps[i] = 0;
         }
         void Build(string Str[],int LN);
-        void DfsLine(TSNode Node,int CurrentLine,string source_code[]);
+        void DfsLine(TSNode Node,int CurrentLine,int ScreenLine,string SourceCode[]);
+        void PrintLine(int CurrentLine,int ScreenLine, string SourceCode[]);
 };
 
 void Syntax::Build(string Str[], int LN){
@@ -27,10 +28,9 @@ void Syntax::Build(string Str[], int LN){
     tree = ts_parser_parse_string(parser, nullptr, Temp.c_str(), Temp.size());
     RootNode = ts_tree_root_node(tree);
 }
-void Syntax::DfsLine(TSNode Node,int CurrentLine,string source_code[]){
+void Syntax::DfsLine(TSNode Node,int CurrentLine,int ScreenLine,string SourceCode[]){
     if (ts_node_is_null(Node))
         return;
-
 	const char* Type = ts_node_type(Node);
     uint32_t StartByte = ts_node_start_byte(Node);
     uint32_t EndByte = ts_node_end_byte(Node);
@@ -41,7 +41,7 @@ void Syntax::DfsLine(TSNode Node,int CurrentLine,string source_code[]){
         uint32_t child_count = ts_node_child_count(Node);
         for (uint32_t i = 0; i < child_count; ++i) {
             TSNode child = ts_node_child(Node, i);
-            DfsLine(child, CurrentLine, source_code);
+            DfsLine(child, CurrentLine,ScreenLine,SourceCode);
         }
         return;
     }
@@ -53,14 +53,29 @@ void Syntax::DfsLine(TSNode Node,int CurrentLine,string source_code[]){
         attron(COLOR_PAIR(3));
     }
 	string rep = ""; 
-	for(int i = StartByte; i < EndByte; i ++) rep += source_code[CurrentLine][i - Ps[CurrentLine]];
-    move(StartRow, StartCol);
+	for(int i = StartByte; i < EndByte; i ++) rep += SourceCode[CurrentLine][i - Ps[CurrentLine]];
+    move(ScreenLine, StartCol + 4);
     printw("%s", rep.c_str());
 	refresh();
     attroff(COLOR_PAIR(1) | COLOR_PAIR(2) | COLOR_PAIR(3));
     uint32_t child_count = ts_node_child_count(Node);
     for (uint32_t i = 0; i < child_count; ++i) {
         TSNode child = ts_node_child(Node, i);
-        DfsLine(child, CurrentLine, source_code);
+        DfsLine(child, CurrentLine, ScreenLine, SourceCode);
     }
+}
+
+void Syntax::PrintLine(int LineNumber,int ScreenLine,string SourceCode[]){
+    TSPoint StartPoint = {LineNumber, 0}; 
+    TSPoint EndPoint = {LineNumber + 1,0};
+    TSNode Node = ts_node_named_descendant_for_point_range(RootNode, StartPoint, EndPoint);
+    move(ScreenLine, 0);
+    attron(COLOR_PAIR(1));
+    if (LineNumber + 1 < TwoDigits)
+        printw("%c", ' ');
+    if (LineNumber + 1 < ThreeDigits)
+        printw("%c", ' ');
+    printw("%d ", LineNumber + 1);
+    attroff(COLOR_PAIR(1));
+    DfsLine(Node, LineNumber, ScreenLine, SourceCode);
 }
