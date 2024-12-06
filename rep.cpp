@@ -5,12 +5,14 @@
 #include <iostream>
 #include <span>
 #include <string>
+#include <dlfcn.h>
+#include <tree_sitter/api.h>
 #include "src/Editor.h"
 #include "src/Screen.h"
 #include "src/File.h"
 #include "src/NormalMode.h"
 #include "src/InsertMode.h"
-#include "src/ClipBoard.h"
+#include "src/Syntax.h"
 
 using namespace std;
 
@@ -54,13 +56,13 @@ int main(int argc, char** argv) {
     Editor Rep;
     Normal RepNormal;
     Insert RepInsert;
-    ClipBoard RepClip;
-    init_pair(1, COLOR_YELLOW, 0);
-    init_pair(2, COLOR_BLACK, COLOR_WHITE);
+    Syntax RepSyntax;
 
     if (RepFile.Open(args[1], Rep) == false) {
         Rep.AddLine(0, "");
     }
+    
+    RepSyntax.Build(Rep.Matn, Rep.LN);
 
     RepScreen.TheEnd = min(RepScreen.TheEnd, Rep.LN - 1);
     RepScreen.PrintScr(Rep);
