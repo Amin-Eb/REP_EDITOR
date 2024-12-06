@@ -16,7 +16,10 @@ class Syntax{
         }
         void Build(string Str[],int LN);
         void DfsLine(TSNode Node,int CurrentLine,int ScreenLine,string SourceCode[]);
+        void DfsScr(TSNode Node,int TheStart,int TheEnd,string SourceCode[]);
         void PrintLine(int CurrentLine,int ScreenLine, string SourceCode[]);
+        void PrintScr(int TheStart,int TheEnd, string SourceCode[]);
+
 };
 
 void Syntax::Build(string Str[], int LN){
@@ -78,4 +81,56 @@ void Syntax::PrintLine(int LineNumber,int ScreenLine,string SourceCode[]){
     printw("%d ", LineNumber + 1);
     attroff(COLOR_PAIR(1));
     DfsLine(Node, LineNumber, ScreenLine, SourceCode);
+}
+void Syntax::DfsScr(TSNode Node,int TheStart,int TheEnd, string SourceCode[]){
+    if (ts_node_is_null(Node))
+        return;
+	const char* Type = ts_node_type(Node);
+    uint32_t StartByte = ts_node_start_byte(Node);
+    uint32_t EndByte = ts_node_end_byte(Node);
+    uint32_t StartRow = ts_node_start_point(Node).row;
+    uint32_t StartCol = ts_node_start_point(Node).column;
+    uint32_t EndRow = ts_node_end_point(Node).row; 
+    if(StartRow > TheEnd || EndRow < TheStart || ts_node_child_count(Node) != 0){
+        uint32_t child_count = ts_node_child_count(Node);
+        for (uint32_t i = 0; i < child_count; ++i) {
+            TSNode child = ts_node_child(Node, i);
+            DfsScr(child, TheStart, TheEnd, SourceCode);
+        }
+        return;
+    }
+    if (strcmp(Type, "declaration_unit") == 0) {
+        attron(COLOR_PAIR(1));
+    } else if (strcmp(Type, "identifier") == 0) {
+        attron(COLOR_PAIR(2));
+    } else if (strcmp(Type, "primitive_type") == 0) {
+        attron(COLOR_PAIR(3));
+    }
+	string rep = ""; 
+	for(int i = StartByte; i < EndByte; i ++) rep += SourceCode[StartRow][i - Ps[StartRow]];
+    move(StartRow - TheStart, StartCol + 4);
+    printw("%s", rep.c_str());
+	refresh();
+    attroff(COLOR_PAIR(1) | COLOR_PAIR(2) | COLOR_PAIR(3));
+    uint32_t child_count = ts_node_child_count(Node);
+    for (uint32_t i = 0; i < child_count; ++i) {
+        TSNode child = ts_node_child(Node, i);
+        DfsScr(child, TheStart, TheEnd, SourceCode);
+    }
+}
+void Syntax::PrintScr(int TheStart,int TheEnd,string SourceCode[]){
+    for (int i = TheStart, j = 0; i <= TheEnd; i++, j++) {
+        move(j, 0);
+        attron(COLOR_PAIR(1));
+        if (i + 1 < TwoDigits)
+            printw("%c", ' ');
+        if (i + 1 < ThreeDigits)
+            printw("%c", ' ');
+        printw("%d ", i + 1);
+        attroff(COLOR_PAIR(1));
+    }
+    TSPoint StartPoint = {TheStart, 0}; 
+    TSPoint EndPoint = {TheEnd + 1,0};
+    TSNode Node = ts_node_named_descendant_for_point_range(RootNode, StartPoint, EndPoint); 
+    DfsScr(Node, TheStart, TheEnd, SourceCode);
 }

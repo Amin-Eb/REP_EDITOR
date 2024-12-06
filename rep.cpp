@@ -63,7 +63,6 @@ int main(int argc, char** argv) {
     }
     
     RepSyntax.Build(Rep.Matn, Rep.LN);
-
     RepScreen.TheEnd = min(RepScreen.TheEnd, Rep.LN - 1);
     RepScreen.PrintScr(Rep);
     mousemask(ALL_MOUSE_EVENTS, NULL);
