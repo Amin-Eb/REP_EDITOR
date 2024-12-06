@@ -17,6 +17,9 @@ class Screen {
         mousemask(ALL_MOUSE_EVENTS, NULL);
         mvchgat(ScreenY, ScreenX, -1, A_BLINK, 1, NULL);
         start_color();
+        init_pair(1, COLOR_YELLOW, 0);
+        init_pair(2, 100, COLOR_BLACK);
+        init_pair(3, COLOR_GREEN, COLOR_BLACK);
         refresh();
     }
     void Init();
@@ -51,7 +54,6 @@ void Screen::PrintScr(Editor Edit) {
         attroff(COLOR_PAIR(1));
         printw("%s", Edit.Matn[i].c_str());
     }
-    move(0,4);
     refresh();
 }
 

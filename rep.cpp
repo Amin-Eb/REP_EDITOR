@@ -5,12 +5,15 @@
 #include <iostream>
 #include <span>
 #include <string>
+#include <cstring>
+#include <dlfcn.h>
+#include <tree_sitter/api.h>
 #include "src/Editor.h"
 #include "src/Screen.h"
 #include "src/File.h"
 #include "src/NormalMode.h"
 #include "src/InsertMode.h"
-#include "src/ClipBoard.h"
+#include "src/Syntax.h"
 
 using namespace std;
 
@@ -37,8 +40,8 @@ void BackSpace(int& CurrentLine, int& x, int& y, Screen& RepScreen,
 
 int main(int argc, char** argv) {
     auto args = std::span(argv, size_t(argc));
-    // 0 normal /1 insert /2 selected
-    int mode = 0;
+    // 0 normal /1 insert 
+    int mode = 0, Selected = 0;
     int ch = 0;
     int y = 0, x = 4;
     int y2, x2;
@@ -54,36 +57,33 @@ int main(int argc, char** argv) {
     Editor Rep;
     Normal RepNormal;
     Insert RepInsert;
-    ClipBoard RepClip;
-    init_pair(1, COLOR_YELLOW, 0);
-    init_pair(2, COLOR_BLACK, COLOR_WHITE);
+    Syntax RepSyntax;
 
     if (RepFile.Open(args[1], Rep) == false) {
         Rep.AddLine(0, "");
     }
-
+    RepSyntax.Build(Rep.Matn, Rep.LN);
+    RepSyntax.DfsLine(RepSyntax.RootNode, 2, Rep.Matn);
+    getch();
+    RepScreen.EndScr();
+    return 0;
     RepScreen.TheEnd = min(RepScreen.TheEnd, Rep.LN - 1);
     RepScreen.PrintScr(Rep);
+    move(0, 4);
     mousemask(ALL_MOUSE_EVENTS, NULL);
     while (ch != KEY_SEND) {
         ch = getch();
-        if(mode == 2){
-            if(ch == 'y'){
-                continue;
-            }
-            if(ch == 'd'){
-                continue;
-            }
-            RepScreen.PrintScr(Rep);
-            mode = 0;
-        }
         if(ch == KEY_MOUSE) {
             if(getmouse(&event) == OK){
-                if(event.bstate == 65536)
+                if(event.bstate == 65536){
                     RepNormal.SendKey(1, CurrentLine, x, y, RepScreen, Rep);
-                if(event.bstate == 2097152)
+                    continue;
+                }
+                if(event.bstate == 2097152){
                     RepNormal.SendKey(2, CurrentLine, x, y, RepScreen, Rep);
-                if(event.bstate & BUTTON1_CLICKED){
+                    continue;
+                }
+                if(event.bstate & BUTTON1_PRESSED & BUTTON1_RELEASED){
                     if(event.x < 4)
                         event.x = 4;
                     if(event.x > Rep.Matn[CurrentLine].size() + 4)
@@ -107,12 +107,13 @@ int main(int argc, char** argv) {
                             if(event.bstate & BUTTON1_RELEASED){  
                                 y = event.y;
                                 x = event.x;
-                                RepScreen.Highlight(y2, CurrentLine,x2 , y2, x, y, Rep);
+                                SelectedString = RepScreen.Highlight(y2, CurrentLine,x2 , y2, x, y, Rep);
+                                move(y, x);
                                 break;
                             }
                         }
                     }
-                    mode = 2;
+                    Selected = 1;
                 }
                 continue;
             }
