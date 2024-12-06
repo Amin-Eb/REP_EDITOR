@@ -1,7 +1,5 @@
-1
-2
-int salam = 2;
-char c = 'b';
-5
-6
-7
+#include<iostream>
+using namepsace std;
+int main(){
+	int a = 0;
+}
