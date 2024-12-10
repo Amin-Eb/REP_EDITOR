@@ -53,7 +53,7 @@ void Normal::LineUp(int& CurrentLine, int& x, int& y, Screen& RepScreen,
         x = min(x, (int)(Rep.Matn[CurrentLine - 1].size()) + 4);
         CurrentLine--;
     } else if (y == 0) {
-        if (Rep.LN - 1 > RepScreen.col && RepScreen.TheStart > 0) {
+        if (RepScreen.TheStart > 0) {
             RepScreen.TheStart--;
             RepScreen.TheEnd--;
             x = min(x, (int)(Rep.Matn[CurrentLine - 1].size()) + 4);
