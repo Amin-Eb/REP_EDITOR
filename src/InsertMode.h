@@ -39,15 +39,17 @@ void Insert::NewChar(char ch, int& CurrentLine, int& x, int& y,
     if(ch == 9){ // supporting Tab key
         for(int i = 0; i < 4; i ++){
             Rep.AddCharacter(CurrentLine, x - 4, ' ');
+            RepScreen.RepSyntax.Build(Rep.Matn, Rep.LN);
             x ++;
         }
-         RepScreen.PrintLine(y, CurrentLine + 1, Rep.Matn[CurrentLine]);
+         RepScreen.PrintLine(y, CurrentLine + 1, Rep.Matn);
         move(y, x);
         return;
     }
     Rep.AddCharacter(CurrentLine, x - 4, ch);
     x++;
-    RepScreen.PrintLine(y, CurrentLine + 1, Rep.Matn[CurrentLine]);
+    RepScreen.RepSyntax.Build(Rep.Matn, Rep.LN);
+    RepScreen.PrintLine(y, CurrentLine, Rep.Matn);
     move(y, x);
 }
 
@@ -66,8 +68,6 @@ void Insert::LineDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,
             RepScreen.Move(y, x);
         }
     } else {
-        if (Rep.LN - 1 < RepScreen.col - 1 && y == Rep.LN - 2)
-            RepScreen.TheEnd++;
         y++;
         x = min(x, (int)(Rep.Matn[CurrentLine + 1].size()));
         x += 4;
@@ -85,7 +85,7 @@ void Insert::LineUp(int& CurrentLine, int& x, int& y, Screen& RepScreen,
         x += 4;
         CurrentLine--;
     } else if (y == 0) {
-        if (Rep.LN - 1 > RepScreen.col && RepScreen.TheStart > 0) {
+        if (RepScreen.TheStart > 0) {
             RepScreen.TheStart--;
             RepScreen.TheEnd--;
             x = min(x, (int)(Rep.Matn[CurrentLine - 1].size()));
@@ -118,19 +118,22 @@ void Insert::Enter(int& CurrentLine, int& x, int& y, Screen& RepScreen,
             TemperoryString += Rep.Matn[CurrentLine][i];
         Rep.Matn[CurrentLine] = TemperoryString;
     }
+    RepScreen.RepSyntax.Build(Rep.Matn, Rep.LN);
     LineDown(CurrentLine, x, y, RepScreen, Rep);
-    RepScreen.PrintScr(Rep);
-    RepScreen.Move(y, x);
+
 }
 
 void Insert::BackSpace(int& CurrentLine, int& x, int& y, Screen& RepScreen,
                        Editor& Rep) {
     if (x == 4) {
-        if (CurrentLine == 0)
+        if (CurrentLine == 0){
+            printw("few");
             return;
-        Rep.Matn[CurrentLine - 1] += Rep.Matn[CurrentLine];
+        }
         x = Rep.Matn[CurrentLine - 1].size() + 4;
+        Rep.Matn[CurrentLine - 1] += Rep.Matn[CurrentLine];
         Rep.DeleteLine(CurrentLine);
+        RepScreen.RepSyntax.Build(Rep.Matn, Rep.LN);
         LineUp(CurrentLine, x, y, RepScreen, Rep);
         RepScreen.PrintScr(Rep);
         RepScreen.Move(y, x);
@@ -141,6 +144,7 @@ void Insert::BackSpace(int& CurrentLine, int& x, int& y, Screen& RepScreen,
             Rep.Ident[CurrentLine] -= 4;
 
         Rep.DeleteCharacter(CurrentLine, x - 4 - 1);
+        RepScreen.RepSyntax.Build(Rep.Matn, Rep.LN);
         x--;
         RepScreen.PrintScr(Rep);
         RepScreen.Move(y, x);

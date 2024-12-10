@@ -7,35 +7,15 @@
 #include <string>
 #include <dlfcn.h>
 #include <tree_sitter/api.h>
+#include "src/Syntax.h"
 #include "src/Editor.h"
 #include "src/Screen.h"
 #include "src/File.h"
 #include "src/NormalMode.h"
 #include "src/InsertMode.h"
-#include "src/Syntax.h"
+
 
 using namespace std;
-
-void LineUp(int& CurrentLine, int& x, int& y, Screen& RepScreen, File& RepFile,
-            Editor& Rep);
-void LineDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,
-              File& RepFile, Editor& Rep);
-void Right(int& CurrentLine, int& x, int& y, Screen& RepScreen, File& RepFile,
-           Editor& Rep);
-void Left(int& CurrentLine, int& x, int& y, Screen& RepScreen, File& RepFile,
-          Editor& Rep);
-void Home(int& CurrentLine, int& x, int& y, Screen& RepScreen, File& RepFile,
-          Editor& Rep);
-void PageUp(int& CurrentLine, int& x, int& y, Screen& RepScreen, File& RepFile,
-            Editor& Rep);
-void PageDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,
-              File& RepFile, Editor& Rep);
-void EndPage(int& CurrentLine, int& x, int& y, Screen& RepScreen, File& RepFile,
-             Editor& Rep);
-void Enter(int& CurrentLine, int& x, int& y, Screen& RepScreen, File& RepFile,
-           Editor& Rep);
-void BackSpace(int& CurrentLine, int& x, int& y, Screen& RepScreen,
-               File& RepFile, Editor& Rep);
 
 int main(int argc, char** argv) {
     auto args = std::span(argv, size_t(argc));
@@ -56,26 +36,20 @@ int main(int argc, char** argv) {
     Editor Rep;
     Normal RepNormal;
     Insert RepInsert;
-    Syntax RepSyntax;
 
     if (RepFile.Open(args[1], Rep) == false) {
         Rep.AddLine(0, "");
     }
     
-    RepSyntax.Build(Rep.Matn, Rep.LN);
-    RepScreen.TheEnd = min(RepScreen.TheEnd, Rep.LN - 1);
+    RepScreen.RepSyntax.Build(Rep.Matn, Rep.LN);
     RepScreen.PrintScr(Rep);
+    move(0, 4);
     mousemask(ALL_MOUSE_EVENTS, NULL);
     while (ch != KEY_SEND) {
         ch = getch();
         if(mode == 2){
-            if(ch == 'y'){
-                continue;
-            }
-            if(ch == 'd'){
-                continue;
-            }
             RepScreen.PrintScr(Rep);
+            move(y, x);
             mode = 0;
         }
         if(ch == KEY_MOUSE) {
@@ -85,15 +59,15 @@ int main(int argc, char** argv) {
                 if(event.bstate == 2097152)
                     RepNormal.SendKey(2, CurrentLine, x, y, RepScreen, Rep);
                 if(event.bstate & BUTTON1_CLICKED){
-                    if(event.x < 4)
-                        event.x = 4;
-                    if(event.x > Rep.Matn[CurrentLine].size() + 4)
-                        event.x = Rep.Matn[CurrentLine].size() + 4;
-                    move(event.y, event.x);
                     y = event.y;
                     x = event.x;
+                    CurrentLine = RepScreen.TheStart + y;
+                    if(event.x < 4)
+                        x = 4;
+                    if(event.x > Rep.Matn[CurrentLine].size() + 4)
+                        x = Rep.Matn[CurrentLine].size() + 4;
+                    move(y, x);
                     refresh();
-                    CurrentLine = RepScreen.TheStart + event.y;
                     continue;
                 }
                 if(event.bstate & BUTTON1_PRESSED){
@@ -102,12 +76,21 @@ int main(int argc, char** argv) {
                     ch = getch();
                     y2 = event.y;
                     x2 = event.x;
-                    CurrentLine = RepScreen.TheStart + event.y;
+                    CurrentLine = RepScreen.TheStart + y2;
+                    if(event.x < 4)
+                        x2 = 4;
+                    if(event.x > Rep.Matn[CurrentLine].size() + 4)
+                        x2 = Rep.Matn[CurrentLine].size() + 4;
                     while(true){
                         if(getmouse(&event) == OK){
                             if(event.bstate & BUTTON1_RELEASED){  
                                 y = event.y;
                                 x = event.x;
+                                int TCurrentLine = RepScreen.TheStart + y;
+                                if(event.x < 4)
+                                    x = 4;
+                                if(event.x > Rep.Matn[TCurrentLine].size() + 4)
+                                    x = Rep.Matn[TCurrentLine].size() + 4;
                                 RepScreen.Highlight(y2, CurrentLine,x2 , y2, x, y, Rep);
                                 break;
                             }
@@ -121,7 +104,7 @@ int main(int argc, char** argv) {
         if (ch == KEY_ESC) {
             mode = 0;
             RepScreen.PrintScr(Rep);
-            RepScreen.PrintLine(RepScreen.col, 0, "entered normal mode!");      
+            RepScreen.PrintMessage(RepScreen.col, 0, "entered normal mode!");      
             continue;
         }
         if (ch == KEY_DOWN) {
@@ -184,7 +167,7 @@ int main(int argc, char** argv) {
         }
         if (mode == 0 && (char)(ch) == 'i') {
             mode = 1;
-            RepScreen.PrintLine(RepScreen.col, 0, "entered insert mode!");
+            RepScreen.PrintMessage(RepScreen.col, 0, "entered insert mode!");
             RepScreen.Refresh();
             continue;
         }

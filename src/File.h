@@ -43,5 +43,5 @@ void File::Save(Editor Edit, Screen& Scr, bool flag) {
 
     if (flag == false)
         return;
-    Scr.PrintLine(Scr.col , 0 , "File saved succecfully!\n");
+    Scr.PrintMessage(Scr.col , 0 , "File saved succecfully!\n");
 }

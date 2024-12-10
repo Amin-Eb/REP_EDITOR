@@ -1,10 +1,14 @@
 using namespace std;
 
+
+
 class Syntax{
     public:
         TSParser* parser;
         TSTree* tree;
         TSNode RootNode;
+        const int TwoDigits = 10;
+        const int ThreeDigits = 100;
         uint32_t Ps[2000];
         Syntax(){
             void* handle = dlopen("/home/aebov/Desktop/REP_EDITOR/tree-sitter-cpp.so", RTLD_NOW);
@@ -70,7 +74,7 @@ void Syntax::DfsLine(TSNode Node,int CurrentLine,int ScreenLine,string SourceCod
 
 void Syntax::PrintLine(int LineNumber,int ScreenLine,string SourceCode[]){
     TSPoint StartPoint = {LineNumber, 0}; 
-    TSPoint EndPoint = {LineNumber + 1,0};
+    TSPoint EndPoint = {LineNumber + 2,0};
     TSNode Node = ts_node_named_descendant_for_point_range(RootNode, StartPoint, EndPoint);
     move(ScreenLine, 0);
     attron(COLOR_PAIR(1));
@@ -80,7 +84,7 @@ void Syntax::PrintLine(int LineNumber,int ScreenLine,string SourceCode[]){
         printw("%c", ' ');
     printw("%d ", LineNumber + 1);
     attroff(COLOR_PAIR(1));
-    DfsLine(Node, LineNumber, ScreenLine, SourceCode);
+    DfsLine(RootNode, LineNumber, ScreenLine, SourceCode);
 }
 void Syntax::DfsScr(TSNode Node,int TheStart,int TheEnd, string SourceCode[]){
     if (ts_node_is_null(Node))
@@ -110,7 +114,6 @@ void Syntax::DfsScr(TSNode Node,int TheStart,int TheEnd, string SourceCode[]){
 	for(int i = StartByte; i < EndByte; i ++) rep += SourceCode[StartRow][i - Ps[StartRow]];
     move(StartRow - TheStart, StartCol + 4);
     printw("%s", rep.c_str());
-	refresh();
     attroff(COLOR_PAIR(1) | COLOR_PAIR(2) | COLOR_PAIR(3));
     uint32_t child_count = ts_node_child_count(Node);
     for (uint32_t i = 0; i < child_count; ++i) {
@@ -133,4 +136,5 @@ void Syntax::PrintScr(int TheStart,int TheEnd,string SourceCode[]){
     TSPoint EndPoint = {TheEnd + 1,0};
     TSNode Node = ts_node_named_descendant_for_point_range(RootNode, StartPoint, EndPoint); 
     DfsScr(Node, TheStart, TheEnd, SourceCode);
+    refresh();
 }
