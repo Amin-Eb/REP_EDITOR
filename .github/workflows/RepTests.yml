@@ -24,6 +24,7 @@ jobs:
         run: pip install --user libtmux
       - name: Building Project
         run: |
+          ls
           mkdir build
           cd build
           cmake ..
