@@ -1,8 +1,53 @@
 cmake_minimum_required(VERSION 3.22.1)
 project(REP_EDITOR)
-set(CMAKE_CXX_STANDARD 20)
-find_package(Curses REQUIRED)
-include_directories(${CURSES_INCLUDE_DIR})
 
-add_executable(REP rep.cpp)
-target_link_libraries(REP ${CURSES_LIBRARIES})
+
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+
+# Source files for your project
+set(SOURCES
+    ${CMAKE_SOURCE_DIR}/rep.cpp   # Replace with your actual source files
+)
+
+# Add Tree-sitter sources
+set(TREESITTER_SOURCES
+    ${CMAKE_SOURCE_DIR}/tree-sitter/lib/src/lib.c  # Tree-sitter core library
+)
+
+# Add Tree-sitter grammar sources (e.g., C language grammar)
+set(TREESITTER_GRAMMAR_SOURCES
+    ${CMAKE_SOURCE_DIR}/tree-sitter-cpp/src/parser.c
+    ${CMAKE_SOURCE_DIR}/tree-sitter-cpp/src/scanner.c
+)
+
+# Combine all sources
+list(APPEND SOURCES ${TREESITTER_SOURCES} ${TREESITTER_GRAMMAR_SOURCES})
+
+# Include directories for Tree-sitter
+include_directories(
+    ${CMAKE_SOURCE_DIR}/tree-sitter/lib/include
+    ${CMAKE_SOURCE_DIR}/tree-sitter/lib/src
+    ${CMAKE_SOURCE_DIR}/tree-sitter-c/src  # Adjust for grammars
+)
+
+# Add executable target
+add_executable(REP ${SOURCES})
+
+# Link ncurses
+find_package(Curses REQUIRED)
+target_link_libraries(REP PRIVATE ${CURSES_LIBRARIES})
+
+# Link dl library (for dynamic linking if needed)
+target_link_libraries(REP PRIVATE dl)
+
+# Optional: Add compiler warnings
+if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(REP PRIVATE -lncurces -ltree-sitter -ldl)
+endif()
+
+# Install rules (optional)
+install(TARGETS REP RUNTIME DESTINATION bin)
