@@ -26,6 +26,7 @@ jobs:
         run: |
           pwd
           ls
+          ls tree-sitter/lib/src/
           mkdir build
           cd build
           cmake ..
