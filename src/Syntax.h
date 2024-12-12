@@ -105,15 +105,20 @@ void Syntax::DfsScr(TSNode Node,int TheStart,int TheEnd, string SourceCode[]){
     }
     if (strcmp(Type, "declaration_unit") == 0) {
         attron(COLOR_PAIR(1));
-    } else if (strcmp(Type, "identifier") == 0) {
-        attron(COLOR_PAIR(2));
-    } else if (strcmp(Type, "primitive_type") == 0) {
-        attron(COLOR_PAIR(3));
     }
+    else if (strcmp(Type, "primitive_type") == 0 || strcmp(Type, "namespace") == 0 ) {
+        attron(COLOR_PAIR(3));
+    } else if (strcmp(Type, "system_lib_string") == 0 || strcmp(Type, "number_literal") == 0){//<iostream>
+        ;
+    }
+
 	string rep = ""; 
 	for(int i = StartByte; i < EndByte; i ++) rep += SourceCode[StartRow][i - Ps[StartRow]];
     move(StartRow - TheStart, StartCol + 4);
     printw("%s", rep.c_str());
+//    printw("%s", Type);
+	refresh();
+//    getch();
     attroff(COLOR_PAIR(1) | COLOR_PAIR(2) | COLOR_PAIR(3));
     uint32_t child_count = ts_node_child_count(Node);
     for (uint32_t i = 0; i < child_count; ++i) {

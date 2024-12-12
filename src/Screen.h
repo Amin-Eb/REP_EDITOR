@@ -97,6 +97,6 @@ string Screen::Highlight(int ScreenLine, int& CurrentLine, int& x, int& y, int& 
     }
     move(ScreenLine - 1, Tmj);
     CurrentLine --;
-    attroff(COLOR_PAIR(2));
+    attroff(COLOR_PAIR(5));
     return RetString;
 }
