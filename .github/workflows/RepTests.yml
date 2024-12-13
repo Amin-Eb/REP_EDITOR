@@ -22,6 +22,13 @@ jobs:
         run: pip install behave
       - name: Installing libtmux
         run: pip install --user libtmux
+      - name: adjusting tree-sitter
+        run: |
+          git clone https://github.com/tree-sitter/tree-sitter-cpp
+          git clone https://github.com/tree-sitter/tree-sitter.git
+          cd tree-sitter-cpp
+          make
+          mv libtree-sitter-cpp.so ../tree-sitter-cpp.so
       - name: Building Project
         run: |
           pwd
