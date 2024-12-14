@@ -145,7 +145,6 @@ void Insert::BackSpace(int& CurrentLine, int& x, int& y, Screen& RepScreen,
         Rep.DeleteCharacter(CurrentLine, x - 4 - 1);
         x--;
         RepScreen.RepSyntax.Build(Rep.Matn, Rep.LN);
-        RepScreen.PrintMessage(y, CurrentLine, RepScreen.EmptyLine);
         RepScreen.PrintLine(y, CurrentLine, Rep.Matn);
         RepScreen.Move(y, x);
     }

@@ -118,7 +118,7 @@ void Normal::Left(int& CurrentLine, int& x, int& y, Screen& RepScreen,
 void Normal::Home(int& CurrentLine, int& x, int& y, Screen& RepScreen,
                   Editor& Rep) {
     RepScreen.TheStart = 0;
-    RepScreen.TheEnd = min(Rep.LN - 1, RepScreen.col - 1);
+    RepScreen.TheEnd = RepScreen.col - 1;
     RepScreen.PrintScr(Rep);
     x = 4, y = 0;
     CurrentLine = 0;
@@ -129,18 +129,20 @@ void Normal::PageUp(int& CurrentLine, int& x, int& y, Screen& RepScreen,
                     Editor& Rep) {
     RepScreen.TheStart = max(0, RepScreen.TheStart - RepScreen.col);
     RepScreen.TheEnd = min(Rep.LN - 1, RepScreen.TheStart + RepScreen.col - 1);
+    if(RepScreen.TheEnd < RepScreen.col - 1)
+        RepScreen.TheEnd = RepScreen.col - 1;
     CurrentLine = RepScreen.TheStart;
-    x = 4, y = 0;
     RepScreen.PrintScr(Rep);
     RepScreen.Move(y, x);
 }
 
 void Normal::PageDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,
                       Editor& Rep) {
+    if(RepScreen.TheEnd > Rep.LN)
+        return;
     RepScreen.TheEnd = min(Rep.LN - 1, RepScreen.TheEnd + RepScreen.col);
     RepScreen.TheStart = max(0, RepScreen.TheEnd - RepScreen.col + 1);
     CurrentLine = RepScreen.TheStart;
-    x = 4, y = 0;
     RepScreen.PrintScr(Rep);
     RepScreen.Move(y, x);
 }

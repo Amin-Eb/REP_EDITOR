@@ -46,7 +46,7 @@ void Screen::Init() {
     row = COLS;
     col = LINES - 1;
     TheEnd = LINES - 2;
-    for(int i = 0; i < col; i ++) EmptyLine += " ";
+    for(int i = 5; i < row; i ++) EmptyLine += " ";
 }
 void Screen::PrintScr(Editor Edit) {
     clear();
@@ -54,6 +54,8 @@ void Screen::PrintScr(Editor Edit) {
 }
 
 void Screen::PrintLine(int ScreenLine, int LineNumber,string Str[]) {
+    move(ScreenLine, 4);
+    printw("%s", EmptyLine.c_str());
     RepSyntax.PrintLine(LineNumber, ScreenLine, Str);
 }
 void Screen::PrintMessage(int ScreenLine, int LineNumber, string Str){
