@@ -148,10 +148,12 @@ void Normal::PageDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,
 void Normal::EndPage(int& CurrentLine, int& x, int& y, Screen& RepScreen,
                      Editor& Rep) {
     RepScreen.TheEnd = Rep.LN - 1;
+    if (Rep.LN - 1 < RepScreen.col) 
+        RepScreen.TheEnd += (RepScreen.col - Rep.LN);
     RepScreen.TheStart = max(0, RepScreen.TheEnd - RepScreen.col + 1);
     CurrentLine = Rep.LN - 1;
     RepScreen.PrintScr(Rep);
-    y = RepScreen.col - 1;
+    y = Rep.LN - RepScreen.TheStart - 1;
     x = Rep.Matn[Rep.LN - 1].size() + 4;
     RepScreen.Move(y, x);
 }

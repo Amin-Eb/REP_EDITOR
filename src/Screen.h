@@ -9,6 +9,7 @@ class Screen {
     int row = 0, col = 0;
     int TheStart = 0, TheEnd = 0;
     int ScreenX = 0, ScreenY = 0;
+    string EmptyLine = "";
     Screen() {
         initscr();
         noecho();    //   do not show the given characters from input
@@ -45,6 +46,7 @@ void Screen::Init() {
     row = COLS;
     col = LINES - 1;
     TheEnd = LINES - 2;
+    for(int i = 0; i < col; i ++) EmptyLine += " ";
 }
 void Screen::PrintScr(Editor Edit) {
     clear();
@@ -63,7 +65,7 @@ void Screen::PrintMessage(int ScreenLine, int LineNumber, string Str){
         printw("%c", ' ');
     printw("%d ", LineNumber);
     attroff(COLOR_PAIR(1));
-    for(int i = 0; i < row - Str.size(); i ++) Str += " ";
+    //for(int i = 0; i < row - Str.size(); i ++) Str += " ";
     printw("%s", Str.c_str());
     refresh();
 }
