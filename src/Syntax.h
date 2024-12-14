@@ -11,7 +11,7 @@ class Syntax{
         const int ThreeDigits = 100;
         uint32_t Ps[2000];
         Syntax(){
-            void* handle = dlopen("/home/aebov/Desktop/REP_EDITOR/tree-sitter-cpp.so", RTLD_NOW);
+            void* handle = dlopen("./libtree-sitter-cpp.so", RTLD_NOW);
             TSLanguage* (*tree_sitter_cpp)() = (TSLanguage* (*)())dlsym(handle, "tree_sitter_cpp");
             parser = ts_parser_new();
             ts_parser_set_language(parser, tree_sitter_cpp());
@@ -74,7 +74,7 @@ void Syntax::DfsLine(TSNode Node,int CurrentLine,int ScreenLine,string SourceCod
 
 void Syntax::PrintLine(int LineNumber,int ScreenLine,string SourceCode[]){
     TSPoint StartPoint = {LineNumber, 0}; 
-    TSPoint EndPoint = {LineNumber + 2,0};
+    TSPoint EndPoint = {LineNumber + 1,0};
     TSNode Node = ts_node_named_descendant_for_point_range(RootNode, StartPoint, EndPoint);
     move(ScreenLine, 0);
     attron(COLOR_PAIR(1));

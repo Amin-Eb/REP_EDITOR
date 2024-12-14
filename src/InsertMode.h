@@ -42,7 +42,7 @@ void Insert::NewChar(char ch, int& CurrentLine, int& x, int& y,
             RepScreen.RepSyntax.Build(Rep.Matn, Rep.LN);
             x ++;
         }
-         RepScreen.PrintLine(y, CurrentLine + 1, Rep.Matn);
+        RepScreen.PrintLine(y, CurrentLine + 1, Rep.Matn);
         move(y, x);
         return;
     }
@@ -127,7 +127,6 @@ void Insert::BackSpace(int& CurrentLine, int& x, int& y, Screen& RepScreen,
                        Editor& Rep) {
     if (x == 4) {
         if (CurrentLine == 0){
-            printw("few");
             return;
         }
         x = Rep.Matn[CurrentLine - 1].size() + 4;
@@ -144,9 +143,10 @@ void Insert::BackSpace(int& CurrentLine, int& x, int& y, Screen& RepScreen,
             Rep.Ident[CurrentLine] -= 4;
 
         Rep.DeleteCharacter(CurrentLine, x - 4 - 1);
-        RepScreen.RepSyntax.Build(Rep.Matn, Rep.LN);
         x--;
-        RepScreen.PrintScr(Rep);
+        RepScreen.RepSyntax.Build(Rep.Matn, Rep.LN);
+        RepScreen.PrintMessage(y, CurrentLine, RepScreen.EmptyLine);
+        RepScreen.PrintLine(y, CurrentLine, Rep.Matn);
         RepScreen.Move(y, x);
     }
 }
