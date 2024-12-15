@@ -62,7 +62,7 @@ void Insert::LineDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,
             RepScreen.TheStart++;
             RepScreen.TheEnd++;
             x = min(x, (int)(Rep.Matn[CurrentLine + 1].size()));
-            x += 4;
+            if(x < 4)x = 4;
             CurrentLine++;
             RepScreen.PrintScr(Rep);
             RepScreen.Move(y, x);
@@ -70,7 +70,7 @@ void Insert::LineDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,
     } else {
         y++;
         x = min(x, (int)(Rep.Matn[CurrentLine + 1].size()));
-        x += 4;
+        if(x < 4)x = 4;
         CurrentLine++;
         RepScreen.PrintScr(Rep);
         RepScreen.Move(y, x);
@@ -82,14 +82,14 @@ void Insert::LineUp(int& CurrentLine, int& x, int& y, Screen& RepScreen,
     if (y > 0) {
         y--;
         x = min(x, (int)(Rep.Matn[CurrentLine - 1].size()));
-        x += 4;
+        if(x < 4)x = 4;
         CurrentLine--;
     } else if (y == 0) {
         if (RepScreen.TheStart > 0) {
             RepScreen.TheStart--;
             RepScreen.TheEnd--;
             x = min(x, (int)(Rep.Matn[CurrentLine - 1].size()));
-            x += 4;
+        if(x < 4)x = 4;
             CurrentLine--;
             RepScreen.PrintScr(Rep);
         }

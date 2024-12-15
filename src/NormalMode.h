@@ -73,6 +73,7 @@ void Normal::LineDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,
             RepScreen.TheStart++;
             RepScreen.TheEnd++;
             x = min(x, (int)(Rep.Matn[CurrentLine + 1].size()) + 4);
+            if(x < 4)x = 4;
             CurrentLine++;
             RepScreen.PrintScr(Rep);
             RepScreen.Move(y, x);
@@ -80,6 +81,7 @@ void Normal::LineDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,
     } else {
         y++;
         x = min(x, (int)(Rep.Matn[CurrentLine + 1].size()) + 4);
+        if(x < 4)x = 4;
         CurrentLine++;
         RepScreen.PrintScr(Rep);
         RepScreen.Move(y, x);
