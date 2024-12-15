@@ -1,5 +1,5 @@
 using namespace std;
-
+using json = nlohmann::json; 
 
 
 class Syntax{
@@ -9,13 +9,14 @@ class Syntax{
         TSNode RootNode;
         const int TwoDigits = 10;
         const int ThreeDigits = 100;
-        uint32_t Ps[2000];
+        uint32_t Ps[1000];
+        map<string, int> ColorMap;
         Syntax(){
             void* handle = dlopen("./libtree-sitter-cpp.so", RTLD_NOW);
             TSLanguage* (*tree_sitter_cpp)() = (TSLanguage* (*)())dlsym(handle, "tree_sitter_cpp");
             parser = ts_parser_new();
             ts_parser_set_language(parser, tree_sitter_cpp());
-            for(int i = 0 ; i < 2000; i ++)
+            for(int i = 0 ; i < 1000; i ++)
                 Ps[i] = 0;
         }
         void Build(string Str[],int LN);
@@ -52,19 +53,16 @@ void Syntax::DfsLine(TSNode Node,int CurrentLine,int ScreenLine,string SourceCod
         }
         return;
     }
-    if (strcmp(Type, "declaration_unit") == 0) {
-        attron(COLOR_PAIR(1));
-    } else if (strcmp(Type, "identifier") == 0) {
-        attron(COLOR_PAIR(2));
-    } else if (strcmp(Type, "primitive_type") == 0) {
-        attron(COLOR_PAIR(3));
+    if (strcmp(Type, "primitive_type") == 0) {
+        attron(COLOR_PAIR(ColorMap[Type]));
     }
+    
 	string rep = ""; 
 	for(int i = StartByte; i < EndByte; i ++) rep += SourceCode[CurrentLine][i - Ps[CurrentLine]];
     move(ScreenLine, StartCol + 4);
     printw("%s", rep.c_str());
 	refresh();
-    attroff(COLOR_PAIR(1) | COLOR_PAIR(2) | COLOR_PAIR(3));
+    attroff(COLOR_PAIR(1) | COLOR_PAIR(2) | COLOR_PAIR(3) | COLOR_PAIR(4));
     uint32_t child_count = ts_node_child_count(Node);
     for (uint32_t i = 0; i < child_count; ++i) {
         TSNode child = ts_node_child(Node, i);
@@ -103,23 +101,18 @@ void Syntax::DfsScr(TSNode Node,int TheStart,int TheEnd, string SourceCode[]){
         }
         return;
     }
-    if (strcmp(Type, "declaration_unit") == 0) {
-        attron(COLOR_PAIR(1));
-    }
-    else if (strcmp(Type, "primitive_type") == 0 || strcmp(Type, "namespace") == 0 ) {
-        attron(COLOR_PAIR(3));
-    } else if (strcmp(Type, "system_lib_string") == 0 || strcmp(Type, "number_literal") == 0){//<iostream>
-        ;
+    if (ColorMap.find(Type) != ColorMap.end()) {
+        attron(COLOR_PAIR(ColorMap[Type]));
     }
 
 	string rep = ""; 
 	for(int i = StartByte; i < EndByte; i ++) rep += SourceCode[StartRow][i - Ps[StartRow]];
     move(StartRow - TheStart, StartCol + 4);
     printw("%s", rep.c_str());
-//    printw("%s", Type);
-	refresh();
-//    getch();
-    attroff(COLOR_PAIR(1) | COLOR_PAIR(2) | COLOR_PAIR(3));
+
+    if (ColorMap.find(Type) != ColorMap.end()) {
+        attroff(COLOR_PAIR(ColorMap[Type]));
+    }
     uint32_t child_count = ts_node_child_count(Node);
     for (uint32_t i = 0; i < child_count; ++i) {
         TSNode child = ts_node_child(Node, i);

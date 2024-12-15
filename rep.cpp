@@ -4,9 +4,11 @@
 #include <fstream>
 #include <iostream>
 #include <span>
+#include <map>
 #include <string>
 #include <dlfcn.h>
 #include <tree_sitter/api.h>
+#include <nlohmann/json.hpp>
 #include "src/Syntax.h"
 #include "src/Editor.h"
 #include "src/Screen.h"
@@ -16,6 +18,7 @@
 
 
 using namespace std;
+using json = nlohmann::json;
 
 int main(int argc, char** argv) {
     auto args = std::span(argv, size_t(argc));

@@ -20,11 +20,19 @@ class Screen {
         mvchgat(ScreenY, ScreenX, -1, A_BLINK, 1, NULL);
         start_color();
         TheEnd = COLS;
+        std::fstream JsonFile{};
+        JsonFile.open("./src/color.json");
+        if (JsonFile.is_open()) {
+            json ColorData;
+            JsonFile >> ColorData;  
+            for(auto& [DataType, ColorPair] : ColorData["types"].items()) {
+                init_color((int)ColorPair["number"] + 100, (int)ColorPair["bg"]["R"] * 1000 / 255, (int)ColorPair["bg"]["G"]* 1000 / 255, (int)ColorPair["bg"]["B"]* 1000 / 255);
+                init_color((int)ColorPair["number"] + 200, (int)ColorPair["fg"]["R"] * 1000 / 255, (int)ColorPair["fg"]["G"]* 1000 / 255, (int)ColorPair["fg"]["B"]* 1000 / 255);
+                init_pair((int)ColorPair["number"] + 100, (int)ColorPair["number"] + 200, (int)ColorPair["number"] + 100);
+                RepSyntax.ColorMap[DataType] = (int)ColorPair["number"] + 100;
+            }
+        } 
         init_pair(1, COLOR_YELLOW, 0);
-        init_pair(2, COLOR_CYAN, COLOR_BLACK);
-        init_pair(3, COLOR_GREEN, COLOR_BLACK);
-        init_pair(4, COLOR_RED, COLOR_BLACK);
-        init_pair(5, COLOR_BLACK, COLOR_WHITE);
         refresh();
     }
     void Init();

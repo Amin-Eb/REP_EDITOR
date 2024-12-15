@@ -42,7 +42,7 @@ void Insert::NewChar(char ch, int& CurrentLine, int& x, int& y,
             RepScreen.RepSyntax.Build(Rep.Matn, Rep.LN);
             x ++;
         }
-        RepScreen.PrintLine(y, CurrentLine + 1, Rep.Matn);
+        RepScreen.PrintLine(y, CurrentLine , Rep.Matn);
         move(y, x);
         return;
     }
