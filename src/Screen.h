@@ -32,7 +32,9 @@ class Screen {
                 RepSyntax.ColorMap[DataType] = (int)ColorPair["number"] + 100;
             }
         } 
+        //number of lines color
         init_pair(1, COLOR_YELLOW, 0);
+        init_pair(5,0, COLOR_WHITE);
         refresh();
     }
     void Init();

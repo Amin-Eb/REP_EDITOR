@@ -53,7 +53,7 @@ void Syntax::DfsLine(TSNode Node,int CurrentLine,int ScreenLine,string SourceCod
         }
         return;
     }
-    if (strcmp(Type, "primitive_type") == 0) {
+    if (ColorMap.find(Type) != ColorMap.end()) {
         attron(COLOR_PAIR(ColorMap[Type]));
     }
     
@@ -61,8 +61,10 @@ void Syntax::DfsLine(TSNode Node,int CurrentLine,int ScreenLine,string SourceCod
 	for(int i = StartByte; i < EndByte; i ++) rep += SourceCode[CurrentLine][i - Ps[CurrentLine]];
     move(ScreenLine, StartCol + 4);
     printw("%s", rep.c_str());
-	refresh();
-    attroff(COLOR_PAIR(1) | COLOR_PAIR(2) | COLOR_PAIR(3) | COLOR_PAIR(4));
+    if (ColorMap.find(Type) != ColorMap.end()) {
+        attroff(COLOR_PAIR(ColorMap[Type]));
+    }
+
     uint32_t child_count = ts_node_child_count(Node);
     for (uint32_t i = 0; i < child_count; ++i) {
         TSNode child = ts_node_child(Node, i);
@@ -83,6 +85,7 @@ void Syntax::PrintLine(int LineNumber,int ScreenLine,string SourceCode[]){
     printw("%d ", LineNumber + 1);
     attroff(COLOR_PAIR(1));
     DfsLine(RootNode, LineNumber, ScreenLine, SourceCode);
+    refresh();
 }
 void Syntax::DfsScr(TSNode Node,int TheStart,int TheEnd, string SourceCode[]){
     if (ts_node_is_null(Node))
@@ -101,18 +104,18 @@ void Syntax::DfsScr(TSNode Node,int TheStart,int TheEnd, string SourceCode[]){
         }
         return;
     }
+
     if (ColorMap.find(Type) != ColorMap.end()) {
         attron(COLOR_PAIR(ColorMap[Type]));
     }
-
 	string rep = ""; 
 	for(int i = StartByte; i < EndByte; i ++) rep += SourceCode[StartRow][i - Ps[StartRow]];
     move(StartRow - TheStart, StartCol + 4);
     printw("%s", rep.c_str());
-
     if (ColorMap.find(Type) != ColorMap.end()) {
         attroff(COLOR_PAIR(ColorMap[Type]));
     }
+
     uint32_t child_count = ts_node_child_count(Node);
     for (uint32_t i = 0; i < child_count; ++i) {
         TSNode child = ts_node_child(Node, i);
