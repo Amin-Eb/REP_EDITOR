@@ -1,15 +1,4 @@
-#include <ncurses.h>
-#include <cstring>
-#include <cstdio>
-#include <fstream>
-#include <iostream>
-#include <span>
-#include <map>
-#include <string>
-#include <dlfcn.h>
-#include <chrono>
-#include <tree_sitter/api.h>
-#include <nlohmann/json.hpp>
+#include "src/coreinc.h"
 #include "src/Syntax.h"
 #include "src/Editor.h"
 #include "src/Screen.h"
@@ -36,7 +25,7 @@ int main(int argc, char** argv) {
 
     Screen RepScreen;
     RepScreen.Init();
-    File RepFile(args[1]);
+    File RepFile(args[1]); 
     Editor Rep;
     Normal RepNormal;
     Insert RepInsert;
@@ -49,6 +38,7 @@ int main(int argc, char** argv) {
     RepScreen.PrintScr(Rep);
     move(0, 4);
     mousemask(ALL_MOUSE_EVENTS, NULL);
+    
     while (ch != KEY_SEND) {
         ch = getch();
         if(mode == 2){

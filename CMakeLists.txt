@@ -10,7 +10,16 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # Source files for your project
 set(SOURCES
-    ${CMAKE_SOURCE_DIR}/rep.cpp   # Replace with your actual source files
+		${CMAKE_SOURCE_DIR}/src/Syntax.cpp
+		${CMAKE_SOURCE_DIR}/src/Editor.cpp
+		${CMAKE_SOURCE_DIR}/src/Screen.cpp
+		${CMAKE_SOURCE_DIR}/src/NormalMode.cpp
+		${CMAKE_SOURCE_DIR}/src/InsertMode.cpp
+		${CMAKE_SOURCE_DIR}/src/Highlight.cpp
+		${CMAKE_SOURCE_DIR}/src/File.cpp
+		${CMAKE_SOURCE_DIR}/src/ClipBoard.cpp
+		${CMAKE_SOURCE_DIR}/rep.cpp
+# Replace with your actual source files
 )
 
 # Add Tree-sitter sources

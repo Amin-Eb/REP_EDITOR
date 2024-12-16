@@ -1,10 +1,11 @@
-using namespace std;
+#ifndef REP_CLIPBOARD_H
+#define REP_CLIPBOARD_H
+
+#include "coreinc.h"
 
 class ClipBoard{
     public :
-        void Copy(string &Str);
+        void Copy(std::string &Str);
 };
 
-void ClipBoard::Copy(string &Str){
-    //clip::set_text("salam");
-}
+#endif
