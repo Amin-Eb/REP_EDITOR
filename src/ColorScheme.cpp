@@ -27,7 +27,7 @@ map<string, int> ColorScheme::Build(string FileName){
     JsonFile >> ColorData; 
     InitColor(0, (string)ColorData["colors"]["editor.background"]);
     InitColor(1, (string)ColorData["colors"]["editor.foreground"]);
-    InitColor(2, (string)ColorData["colors"]["editor.lineHighlightBackground"]);
+    InitColor(2, (string)ColorData["colors"]["editor.selectionHighlightBackground"]);
     int i = 0, ted = 5;
     for(auto x : ColorData["tokenColors"]){
         cout << ColorData["tokenColors"][i] << endl;
@@ -37,7 +37,7 @@ map<string, int> ColorScheme::Build(string FileName){
                 InitColor(ted, ColorData["tokenColors"][i]["settings"]["foreground"]);
                 init_pair(ted, ted + 10, 10);
                 ColorMap["string_content"] = ted;
-                ColorMap["char_literal"] = ted;
+                ColorMap["character"] = ted;
                 ColorMap["'"] = ted;
                 ColorMap["\""] = ted;
                 ted ++;
@@ -46,7 +46,7 @@ map<string, int> ColorScheme::Build(string FileName){
                 init_pair(ted, ted + 10, 10);
                 ColorMap["comment"] = ted;
                 ted ++;
-            }else if(y == "keyword"){
+            }else if(y == "keyword.control"){
                 InitColor(ted, ColorData["tokenColors"][i]["settings"]["foreground"]);
                 init_pair(ted, ted + 10, 10);
                 ColorMap["if"] = ted;
@@ -56,6 +56,12 @@ map<string, int> ColorScheme::Build(string FileName){
                 ColorMap["return"] = ted;
                 ColorMap["continue"] = ted;
                 ColorMap["else"] = ted;
+                ColorMap["using"] = ted;
+                ColorMap["#include"] = ted;
+                ColorMap["#define"] = ted;
+                ColorMap["#endif"] = ted;
+                ColorMap["#ifndef"] = ted;
+                ColorMap["#ifdef"] = ted;
                 ted ++;
             }else if(y == "constant.numeric"){
                 InitColor(ted, ColorData["tokenColors"][i]["settings"]["foreground"]);
@@ -66,6 +72,7 @@ map<string, int> ColorScheme::Build(string FileName){
                 InitColor(ted, ColorData["tokenColors"][i]["settings"]["foreground"]);
                 init_pair(ted, ted + 10, 10);
                 ColorMap["primitive_type"] = ted;
+                ColorMap["namespace"] = ted;
                 ted ++;
             }
             else if(y == "variable.other.constant"){
@@ -80,10 +87,21 @@ map<string, int> ColorScheme::Build(string FileName){
             else if(y == "entity.name.function"){
                 InitColor(ted, ColorData["tokenColors"][i]["settings"]["foreground"]);
                 init_pair(ted, ted + 10, 10);
-                ColorMap["identifier"] = ted;
+                ColorMap["field_identifier"] = ted;
+                ColorMap["func"] = ted;
                 ted ++;   
+            }else if(y == "meta.preprocessor.string"){
+                InitColor(ted, ColorData["tokenColors"][i]["settings"]["foreground"]);
+                init_pair(ted, ted + 10, 10);
+                ColorMap["system_libstring"] = ted;
+                ted ++;
+            }else if(y == "entity.name.namespace"){
+                InitColor(ted, ColorData["tokenColors"][i]["settings"]["foreground"]);
+                init_pair(ted, ted + 10, 10);
+                ColorMap["namespace_identifier"] = ted;
+                ted ++;
             }
-            j ++;
+            j++;
         } 
         i++;
     }

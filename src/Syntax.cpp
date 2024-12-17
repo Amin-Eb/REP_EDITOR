@@ -22,7 +22,7 @@ void Syntax::Build(string Str[], int LN){
     tree = ts_parser_parse_string(parser, nullptr, Temp.c_str(), Temp.size());
     RootNode = ts_tree_root_node(tree);
 }
-void Syntax::DfsLine(TSNode Node,int CurrentLine,int ScreenLine,string SourceCode[]){
+void Syntax::DfsLine(TSNode Node,string Par,int CurrentLine,int ScreenLine,string SourceCode[]){
     if (ts_node_is_null(Node))
         return;
 	const char* Type = ts_node_type(Node);
@@ -35,11 +35,14 @@ void Syntax::DfsLine(TSNode Node,int CurrentLine,int ScreenLine,string SourceCod
         uint32_t child_count = ts_node_child_count(Node);
         for (uint32_t i = 0; i < child_count; ++i) {
             TSNode child = ts_node_child(Node, i);
-            DfsLine(child, CurrentLine,ScreenLine,SourceCode);
+            DfsLine(child, Type,CurrentLine,ScreenLine,SourceCode);
         }
         return;
     }
-    if (ColorMap.find(Type) != ColorMap.end()) {
+     if(Par == "function_declarator" && strcmp(Type,"identifier") == 0){
+        attron(COLOR_PAIR(ColorMap["func"]));
+    }
+    else if (ColorMap.find(Type) != ColorMap.end()) {
         attron(COLOR_PAIR(ColorMap[Type]));
     }
     
@@ -47,14 +50,17 @@ void Syntax::DfsLine(TSNode Node,int CurrentLine,int ScreenLine,string SourceCod
 	for(int i = StartByte; i < EndByte; i ++) rep += SourceCode[CurrentLine][i - Ps[CurrentLine]];
     move(ScreenLine, StartCol + 4);
     printw("%s", rep.c_str());
-    if (ColorMap.find(Type) != ColorMap.end()) {
+     if(Par == "function_declarator" && strcmp(Type,"identifier") == 0){
+        attroff(COLOR_PAIR(ColorMap["func"]));
+    }
+    else if (ColorMap.find(Type) != ColorMap.end()) {
         attroff(COLOR_PAIR(ColorMap[Type]));
     }
 
     uint32_t child_count = ts_node_child_count(Node);
     for (uint32_t i = 0; i < child_count; ++i) {
         TSNode child = ts_node_child(Node, i);
-        DfsLine(child, CurrentLine, ScreenLine, SourceCode);
+        DfsLine(child,Type, CurrentLine, ScreenLine, SourceCode);
     }
 }
 
@@ -70,10 +76,10 @@ void Syntax::PrintLine(int LineNumber,int ScreenLine,string SourceCode[]){
         printw("%c", ' ');
     printw("%d ", LineNumber + 1);
     attroff(COLOR_PAIR(1));
-    DfsLine(RootNode, LineNumber, ScreenLine, SourceCode);
+    DfsLine(RootNode,ts_node_type(RootNode), LineNumber, ScreenLine, SourceCode);
     refresh();
 }
-void Syntax::DfsScr(TSNode Node,int TheStart,int TheEnd, string SourceCode[]){
+void Syntax::DfsScr(TSNode Node,string Par,int TheStart,int TheEnd, string SourceCode[]){
     if (ts_node_is_null(Node))
         return;
 	const char* Type = ts_node_type(Node);
@@ -86,26 +92,31 @@ void Syntax::DfsScr(TSNode Node,int TheStart,int TheEnd, string SourceCode[]){
         uint32_t child_count = ts_node_child_count(Node);
         for (uint32_t i = 0; i < child_count; ++i) {
             TSNode child = ts_node_child(Node, i);
-            DfsScr(child, TheStart, TheEnd, SourceCode);
+            DfsScr(child, (string)Type, TheStart, TheEnd, SourceCode);
         }
         return;
     }
-
-    if (ColorMap.find(Type) != ColorMap.end()) {
+    if(Par == "function_declarator" && strcmp(Type,"identifier") == 0){
+        attron(COLOR_PAIR(ColorMap["func"]));
+    }
+    else if (ColorMap.find(Type) != ColorMap.end()) {
         attron(COLOR_PAIR(ColorMap[Type]));
     }
 	string rep = ""; 
 	for(int i = StartByte; i < EndByte; i ++) rep += SourceCode[StartRow][i - Ps[StartRow]];
     move(StartRow - TheStart, StartCol + 4);
     printw("%s", rep.c_str());
-    if (ColorMap.find(Type) != ColorMap.end()) {
+    if(Par == "function_declarator" && strcmp(Type,"identifier") == 0){
+        attroff(COLOR_PAIR(ColorMap["func"]));
+    }
+    else if (ColorMap.find(Type) != ColorMap.end()) {
         attroff(COLOR_PAIR(ColorMap[Type]));
     }
 
     uint32_t child_count = ts_node_child_count(Node);
     for (uint32_t i = 0; i < child_count; ++i) {
         TSNode child = ts_node_child(Node, i);
-        DfsScr(child, TheStart, TheEnd, SourceCode);
+        DfsScr(child, (string)Type,TheStart, TheEnd, SourceCode);
     }
 }
 void Syntax::PrintScr(int TheStart,int TheEnd,string SourceCode[]){
@@ -122,7 +133,7 @@ void Syntax::PrintScr(int TheStart,int TheEnd,string SourceCode[]){
     TSPoint StartPoint = {TheStart, 0}; 
     TSPoint EndPoint = {TheEnd + 1,0};
     TSNode Node = ts_node_named_descendant_for_point_range(RootNode, StartPoint, EndPoint); 
-    DfsScr(Node, TheStart, TheEnd, SourceCode);
+    DfsScr(Node, ts_node_type(Node),TheStart, TheEnd, SourceCode);
     refresh();
 }
 

@@ -1,7 +1,7 @@
 #ifndef REP_SYNTAX_H
 #define REP_SYNTAX_H
 #include "coreinc.h"
-
+using namespace std;
 using json = nlohmann::json; 
 
 
@@ -16,8 +16,8 @@ class Syntax{
 		std::map<std::string, int> ColorMap;
 		Syntax();
 		void Build(std::string Str[],int LN);
-		void DfsLine(TSNode Node,int CurrentLine,int ScreenLine,std::string SourceCode[]);
-		void DfsScr(TSNode Node,int TheStart,int TheEnd,std::string SourceCode[]);
+		void DfsLine(TSNode Node,std::string Par,int CurrentLine,int ScreenLine,std::string SourceCode[]);
+		void DfsScr(TSNode Node,std::string Par,int TheStart,int TheEnd,std::string SourceCode[]);
 		void PrintLine(int CurrentLine,int ScreenLine, std::string SourceCode[]);
 		void PrintScr(int TheStart,int TheEnd, std::string SourceCode[]);
 
