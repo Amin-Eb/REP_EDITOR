@@ -15,21 +15,16 @@ Screen::Screen() {
     mvchgat(ScreenY, ScreenX, -1, A_BLINK, 1, NULL);
     start_color();
     TheEnd = COLS;
-    std::fstream JsonFile{};
-    JsonFile.open("./src/color.json");
-    if (JsonFile.is_open()) {
-        json ColorData;
-        JsonFile >> ColorData;  
-        for(auto& [DataType, ColorPair] : ColorData["types"].items()) {
-            init_color((int)ColorPair["number"] + 100, (int)ColorPair["bg"]["R"] * 1000 / 255, (int)ColorPair["bg"]["G"]* 1000 / 255, (int)ColorPair["bg"]["B"]* 1000 / 255);
-            init_color((int)ColorPair["number"] + 200, (int)ColorPair["fg"]["R"] * 1000 / 255, (int)ColorPair["fg"]["G"]* 1000 / 255, (int)ColorPair["fg"]["B"]* 1000 / 255);
-            init_pair((int)ColorPair["number"] + 100, (int)ColorPair["number"] + 200, (int)ColorPair["number"] + 100);
-            RepSyntax.ColorMap[DataType] = (int)ColorPair["number"] + 100;
-        }
-    } 
+    RepSyntax.ColorMap = Scheme.Build("color.json");
     //number of lines color
-    init_pair(1, COLOR_YELLOW, 0);
-    init_pair(5,0, COLOR_WHITE);
+    init_pair(1, COLOR_YELLOW, 10);
+    //selected mode color
+    init_pair(2,0, COLOR_WHITE);
+    //default text color
+    init_pair(3, 11 , 10);
+    //highlighted tesxt color
+    init_pair(4, 11, 12);
+    bkgd(COLOR_PAIR(3));
     refresh();
 }
 
@@ -85,7 +80,7 @@ void Screen::Move(int y, int x) {
 
 string Screen::Highlight(int ScreenLine, int& CurrentLine, int& x, int& y, int& x2, int& y2, Editor& Rep){
     //printw("few %d %d %d %d %d few",x, y, x2, y2, CurrentLine);
-    attron(COLOR_PAIR(5));
+    attron(COLOR_PAIR(4));
     string RetString("");
     int yConst = y, Tmj = 0;
     for(int i = y; i <= y2; i ++, CurrentLine ++, ScreenLine ++){
@@ -99,6 +94,6 @@ string Screen::Highlight(int ScreenLine, int& CurrentLine, int& x, int& y, int& 
     }
     move(ScreenLine - 1, Tmj);
     CurrentLine --;
-    attroff(COLOR_PAIR(5));
+    attroff(COLOR_PAIR(4));
     return RetString;
 }

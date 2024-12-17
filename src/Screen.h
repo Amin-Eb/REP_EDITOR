@@ -1,12 +1,14 @@
 #ifndef REP_SCREEN_H
 #define REP_SCREEN_H
 #include "coreinc.h"
+#include "ColorScheme.h"
 #include "Syntax.h"
 #include "Editor.h"
 
 class Screen {
    public:
     Syntax RepSyntax;
+    ColorScheme Scheme;
     int row = 0, col = 0;
     int TheStart = 0, TheEnd = 0;
     int ScreenX = 0, ScreenY = 0;

@@ -18,6 +18,7 @@ set(SOURCES
 		${CMAKE_SOURCE_DIR}/src/Highlight.cpp
 		${CMAKE_SOURCE_DIR}/src/File.cpp
 		${CMAKE_SOURCE_DIR}/src/ClipBoard.cpp
+		${CMAKE_SOURCE_DIR}/src/ColorScheme.cpp
 		${CMAKE_SOURCE_DIR}/rep.cpp
 # Replace with your actual source files
 )
