@@ -10,5 +10,5 @@
 #include <dlfcn.h>
 #include <chrono>
 #include <tree_sitter/api.h>
-#include <nlohmann/json.hpp>
+#include "json.hpp"
 

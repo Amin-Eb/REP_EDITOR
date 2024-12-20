@@ -10,6 +10,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # Source files for your project
 set(SOURCES
+		${CMAKE_SOURCE_DIR}/third_party/json.hpp
 		${CMAKE_SOURCE_DIR}/src/Syntax.cpp
 		${CMAKE_SOURCE_DIR}/src/Editor.cpp
 		${CMAKE_SOURCE_DIR}/src/Screen.cpp
@@ -46,10 +47,6 @@ include_directories(
 
 # Add executable target
 add_executable(REP ${SOURCES})
-
-# Link jsonlib
-find_package(nlohmann_json 3.2.0 REQUIRED)
-target_link_libraries(REP PRIVATE nlohmann_json::nlohmann_json)
 
 # Link ncurses
 find_package(Curses REQUIRED)
