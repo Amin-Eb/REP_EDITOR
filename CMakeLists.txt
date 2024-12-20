@@ -10,7 +10,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 # Source files for your project
 set(SOURCES
-		${CMAKE_SOURCE_DIR}/third_party/json.hpp
+		${CMAKE_SOURCE_DIR}/src/json.hpp
 		${CMAKE_SOURCE_DIR}/src/Syntax.cpp
 		${CMAKE_SOURCE_DIR}/src/Editor.cpp
 		${CMAKE_SOURCE_DIR}/src/Screen.cpp
