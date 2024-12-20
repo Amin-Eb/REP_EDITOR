@@ -13,7 +13,7 @@ void ColorScheme::InitColor(int Number, string HexaColor){
     ss.clear();
     ss << std::hex << HexaColor.substr(5, 2); // Blue
     ss >> b;    
-    init_color(Number + 10, r * 1000 / 255, g * 1000 / 255, b * 1000 / 255);
+    init_color(Number + 10, r * 4, g * 4, b * 4);
 }
 
 map<string, int> ColorScheme::Build(string FileName){

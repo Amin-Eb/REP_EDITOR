@@ -47,6 +47,10 @@ include_directories(
 # Add executable target
 add_executable(REP ${SOURCES})
 
+# Link jsonlib
+find_package(nlohmann_json 3.2.0 REQUIRED)
+target_link_libraries(REP PRIVATE nlohmann_json::nlohmann_json)
+
 # Link ncurses
 find_package(Curses REQUIRED)
 target_link_libraries(REP PRIVATE ${CURSES_LIBRARIES})
