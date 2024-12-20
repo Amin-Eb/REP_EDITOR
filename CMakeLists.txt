@@ -26,24 +26,17 @@ set(SOURCES
 
 # Add Tree-sitter sources
 set(TREESITTER_SOURCES
-    ${CMAKE_SOURCE_DIR}/tree-sitter/lib/src/lib.c  # Tree-sitter core library
+    ${CMAKE_SOURCE_DIR}/src/lib/src/lib.c  # Tree-sitter core library
 )
 
 # Add Tree-sitter grammar sources (e.g., C language grammar)
 set(TREESITTER_GRAMMAR_SOURCES
-    ${CMAKE_SOURCE_DIR}/tree-sitter-cpp/src/parser.c
-    ${CMAKE_SOURCE_DIR}/tree-sitter-cpp/src/scanner.c
+    ${CMAKE_SOURCE_DIR}/src/tree-sitter-cpp-src/parser.c
+    ${CMAKE_SOURCE_DIR}/src/tree-sitter-cpp-src/scanner.c
 )
 
 # Combine all sources
 list(APPEND SOURCES ${TREESITTER_SOURCES} ${TREESITTER_GRAMMAR_SOURCES})
-
-# Include directories for Tree-sitter
-include_directories(
-    ${CMAKE_SOURCE_DIR}/tree-sitter/lib/include
-    ${CMAKE_SOURCE_DIR}/tree-sitter/lib/src
-    ${CMAKE_SOURCE_DIR}/tree-sitter-c/src  # Adjust for grammars
-)
 
 # Add executable target
 add_executable(REP ${SOURCES})
