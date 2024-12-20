@@ -27,6 +27,7 @@ set(SOURCES
 # Add Tree-sitter sources
 set(TREESITTER_SOURCES
     ${CMAKE_SOURCE_DIR}/src/lib/src/lib.c  # Tree-sitter core library
+    ${CMAKE_SOURCE_DIR}/src/lib/include/tree_sitter/api.h
 )
 
 # Add Tree-sitter grammar sources (e.g., C language grammar)
