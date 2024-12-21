@@ -8,9 +8,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
+include(${CMAKE_BINARY_DIR}/conan_toolchain.cmake)
+find_package(nlohmann_json REQUIRED)
+find_package(Curses REQUIRED)
+find_package(tree-sitter REQUIRED)
 # Source files for your project
 set(SOURCES
-		${CMAKE_SOURCE_DIR}/src/json.hpp
 		${CMAKE_SOURCE_DIR}/src/Syntax.cpp
 		${CMAKE_SOURCE_DIR}/src/Editor.cpp
 		${CMAKE_SOURCE_DIR}/src/Screen.cpp
@@ -23,36 +26,18 @@ set(SOURCES
 		${CMAKE_SOURCE_DIR}/rep.cpp
 # Replace with your actual source files
 )
-
-# Add Tree-sitter sources
-set(TREESITTER_SOURCES
-    ${CMAKE_SOURCE_DIR}/src/lib/src/lib.c  # Tree-sitter core library
-    ${CMAKE_SOURCE_DIR}/src/lib/include/tree_sitter/api.h
-)
-
-# Add Tree-sitter grammar sources (e.g., C language grammar)
-set(TREESITTER_GRAMMAR_SOURCES
-    ${CMAKE_SOURCE_DIR}/src/tree-sitter-cpp-src/parser.c
-    ${CMAKE_SOURCE_DIR}/src/tree-sitter-cpp-src/scanner.c
-)
-
-# Combine all sources
-list(APPEND SOURCES ${TREESITTER_SOURCES} ${TREESITTER_GRAMMAR_SOURCES})
-
-# Add executable target
 add_executable(REP ${SOURCES})
 
-# Link ncurses
-find_package(Curses REQUIRED)
-target_link_libraries(REP PRIVATE ${CURSES_LIBRARIES})
+list(APPEND CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/build")
 
-# Link dl library (for dynamic linking if needed)
+target_link_libraries(REP PRIVATE
+    nlohmann_json::nlohmann_json
+    ${CURSES_LIBRARIES}
+    tree-sitter::tree-sitter
+)
+
 target_link_libraries(REP PRIVATE dl)
 
-# Optional: Add compiler warnings
-if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    target_compile_options(REP PRIVATE -lncurces -ltree-sitter -ldl)
-endif()
 
 # Install rules (optional)
 install(TARGETS REP RUNTIME DESTINATION bin)

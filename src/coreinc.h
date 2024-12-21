@@ -9,6 +9,7 @@
 #include <string>
 #include <dlfcn.h>
 #include <chrono>
-#include "lib/include/tree_sitter/api.h"
-#include "json.hpp"
+#include <tree_sitter/api.h>
+#include <nlohmann/json.hpp>
+#include <vector>
 

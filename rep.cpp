@@ -12,7 +12,7 @@ using namespace std;
 using json = nlohmann::json;
 
 int main(int argc, char** argv) {
-    auto args = std::span(argv, size_t(argc));
+    vector<std::string> args(argv, argv + argc);   
     // 0 normal /1 insert /2 selected
     int mode = 0;
     int ch = 0;
