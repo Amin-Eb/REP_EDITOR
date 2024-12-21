@@ -1,4 +1,4 @@
-sudo pip install conan
+pip install conan
 sudo conan profile detect
 sudo conan install . --output-folder=build --build=missing -s compiler.cppstd=20
 sudo chmod -R 777 build
