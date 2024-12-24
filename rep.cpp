@@ -2,10 +2,10 @@
 #include "src/ColorScheme.h"
 #include "src/Syntax.h"
 #include "src/Editor.h"
-#include "src/mouse.h"
 #include "src/Screen.h"
-#include "src/File.h"
 #include "src/NormalMode.h"
+#include "src/Mouse.h"
+#include "src/File.h"
 #include "src/InsertMode.h"
 
 
@@ -23,7 +23,6 @@ int main(int argc, char** argv) {
     string SelectedString;
     const int Enter_Key = 10;
     const int KEY_ESC = 27;
-    MEVENT event;
 
     Screen RepScreen;
     RepScreen.Init();
@@ -31,6 +30,7 @@ int main(int argc, char** argv) {
     Editor Rep;
     Normal RepNormal;
     Insert RepInsert;
+    Mouse RepMouse;
 
     if (RepFile.Open(args[1], Rep) == false) {
         Rep.AddLine(0, "");
@@ -50,58 +50,8 @@ int main(int argc, char** argv) {
             continue;
         }
         if(ch == KEY_MOUSE) {
-            if(getmouse(&event) == OK){
-                auto TimeStart = chrono::high_resolution_clock::now();
-                if(event.bstate == 65536)
-                    RepNormal.SendKey(1, CurrentLine, x, y, RepScreen, Rep);
-                if(event.bstate == 2097152)
-                    RepNormal.SendKey(2, CurrentLine, x, y, RepScreen, Rep);
-                if(event.bstate & BUTTON1_PRESSED){
-                    ch = getch();
-                    y2 = event.y;
-                    x2 = event.x;
-                    CurrentLine = RepScreen.TheStart + y2;
-                    if(event.x < 4)
-                        x2 = 4;
-                    if(event.x > Rep.Matn[CurrentLine].size() + 4)
-                        x2 = Rep.Matn[CurrentLine].size() + 4;
-                    while(true){
-                        if(getmouse(&event) == OK){
-                            if(event.bstate & BUTTON1_RELEASED){  
-                                auto TimeEnd = chrono::high_resolution_clock::now();
-                                auto ElapsedTime = chrono::duration<double, std::milli>(TimeEnd - TimeStart).count();
-                                if(ElapsedTime < 200){
-                                    y = event.y;
-                                    x = event.x;
-                                    CurrentLine = RepScreen.TheStart + y;
-                                    if(event.x < 4)
-                                        x = 4;
-                                    if(event.x > Rep.Matn[CurrentLine].size() + 4)
-                                        x = Rep.Matn[CurrentLine].size() + 4;
-                                    move(28, 0);
-                                    move(y, x);
-                                    refresh();
-                                    break;
-                                }
-                                else{
-                                    mode = 2;
-                                    y = event.y;
-                                    x = event.x;
-                                    int TCurrentLine = RepScreen.TheStart + y;
-                                    if(event.x < 4)
-                                        x = 4;
-                                    if(event.x > Rep.Matn[TCurrentLine].size() + 4)
-                                        x = Rep.Matn[TCurrentLine].size() + 4;
-                                    RepScreen.Highlight(y2, CurrentLine,x2 , y2, x, y, Rep);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    
-                }
-                continue;
-            }
+            RepMouse.Press(x, y, x2, y2, CurrentLine,RepScreen, Rep, mode, RepNormal);
+            continue;
         }
         if (ch == KEY_ESC) {
             mode = 0;
