@@ -16,6 +16,7 @@ find_package(tree-sitter REQUIRED)
 set(SOURCES
 		${CMAKE_SOURCE_DIR}/src/Syntax.cpp
 		${CMAKE_SOURCE_DIR}/src/Editor.cpp
+		${CMAKE_SOURCE_DIR}/src/mouse.cpp
 		${CMAKE_SOURCE_DIR}/src/Screen.cpp
 		${CMAKE_SOURCE_DIR}/src/NormalMode.cpp
 		${CMAKE_SOURCE_DIR}/src/InsertMode.cpp
