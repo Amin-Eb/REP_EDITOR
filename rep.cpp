@@ -2,6 +2,7 @@
 #include "src/ColorScheme.h"
 #include "src/Syntax.h"
 #include "src/Editor.h"
+#include "src/mouse.h"
 #include "src/Screen.h"
 #include "src/File.h"
 #include "src/NormalMode.h"
