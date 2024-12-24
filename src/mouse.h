@@ -3,8 +3,8 @@
 #include "coreinc.h"
 using namespace std;
 
-class mouse{
-    
+class Mouse{
+    void Press(int &x,int &y);
 };
 
 #endif
