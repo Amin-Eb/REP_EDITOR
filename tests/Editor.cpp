@@ -3,8 +3,8 @@
 
 TEST(EditorTest, InsertText) {
     Editor editor;
-    editor.AddLine(0,"salam");
-    EXPECT_EQ(editor.Matn[0], "salam");
+    editor.AddLine(0,"salamo");
+    EXPECT_EQ(editor.Matn[0], "salamo");
 }
 
 int main(int argc, char **argv) {
