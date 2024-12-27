@@ -2,6 +2,7 @@
 nlohmann_json/3.11.2
 tree-sitter/0.24.4
 gsl-lite/0.40.0
+gtest/1.13.0
 
 [generators]
 CMakeDeps
