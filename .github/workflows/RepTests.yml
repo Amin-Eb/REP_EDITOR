@@ -24,6 +24,6 @@ jobs:
         run: pip install --user libtmux
       - name: Building Project
         run: |
-            chomd +x install.sh
+            sudo chomd +x install.sh
             ./install.sh
       - run: echo "🍏 This job's status is ${{ job.status }}."
