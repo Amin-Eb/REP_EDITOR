@@ -1,2 +1,2 @@
-pip install --upgrade --force-reinstall
+pip install --upgrade --force-reinstall conan
 conan --version
