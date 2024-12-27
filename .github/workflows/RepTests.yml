@@ -24,6 +24,6 @@ jobs:
         run: pip install --user libtmux
       - name: Building Project
         run: |
-          sudo chmod 777 install.sh
-          sudo ./install.sh
+          pip install --upgrade --force-reinstall conan
+          conan --version
       - run: echo "🍏 This job's status is ${{ job.status }}."
