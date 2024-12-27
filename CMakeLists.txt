@@ -41,9 +41,16 @@ target_link_libraries(REP PRIVATE
     nlohmann_json::nlohmann_json
     ${CURSES_LIBRARIES}
     tree-sitter::tree-sitter
+    dl
 )
-target_link_libraries(run_tests PRIVATE GTest::gtest_main)
-target_link_libraries(REP PRIVATE dl)
+target_link_libraries(run_tests PRIVATE
+    GTest::gtest_main
+    nlohmann_json::nlohmann_json
+    ${CURSES_LIBRARIES}
+    tree-sitter::tree-sitter
+    dl
+)
+
 
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
