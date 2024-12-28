@@ -25,7 +25,6 @@ TEST(EditorTest, DeleteText) {
     EXPECT_EQ(editor.Matn[0], "");
 }
 TEST(ScreenTest, MoveCursor) {
-    Screen sdd;
 }
 
 int main(int argc, char **argv) {
