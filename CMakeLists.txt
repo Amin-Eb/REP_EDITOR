@@ -30,7 +30,17 @@ set(SOURCES
 # Replace with your actual source files
 )
 set(TESTS
-    ${CMAKE_SOURCE_DIR}/tests/Editor.cpp
+	${CMAKE_SOURCE_DIR}/src/Syntax.cpp
+    ${CMAKE_SOURCE_DIR}/src/Editor.cpp
+    ${CMAKE_SOURCE_DIR}/src/Mouse.cpp
+    ${CMAKE_SOURCE_DIR}/src/Screen.cpp
+    ${CMAKE_SOURCE_DIR}/src/NormalMode.cpp
+    ${CMAKE_SOURCE_DIR}/src/InsertMode.cpp
+    ${CMAKE_SOURCE_DIR}/src/Highlight.cpp
+    ${CMAKE_SOURCE_DIR}/src/File.cpp
+    ${CMAKE_SOURCE_DIR}/src/ClipBoard.cpp
+    ${CMAKE_SOURCE_DIR}/src/ColorScheme.cpp
+    ${CMAKE_SOURCE_DIR}/tests/Tests.cpp
 )
 add_executable(REP ${SOURCES})
 add_executable(run_tests ${TESTS})

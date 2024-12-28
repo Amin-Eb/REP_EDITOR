@@ -126,6 +126,5 @@ int main(int argc, char** argv) {
         if (mode == 1)
             RepInsert.SendKey(ch, CurrentLine, x, y, RepScreen, Rep);
     }
-    RepScreen.EndScr();
     exit(0);
 }

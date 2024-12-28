@@ -18,11 +18,12 @@ void ColorScheme::InitColor(int Number, string HexaColor){
 
 map<string, int> ColorScheme::Build(string FileName){
     std::fstream JsonFile{};
-    JsonFile.open(FileName);
     map<string,int> ColorMap;
-    if (!JsonFile.is_open()) {
+    try{
+        JsonFile.open(FileName);
+    }catch(const std::ios_base::failure& e){
         return ColorMap;
-    }      
+    }
     json ColorData;
     JsonFile >> ColorData; 
     InitColor(0, (string)ColorData["colors"]["editor.background"]);

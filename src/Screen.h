@@ -14,6 +14,7 @@ class Screen {
     int ScreenX = 0, ScreenY = 0;
 	std::string EmptyLine = "";
     Screen();
+    ~Screen();
     void Init();
     void PrintScr(Editor Edit);
     void PrintLine(int ScreenLine, int LineNumber, std::string Str[]);
