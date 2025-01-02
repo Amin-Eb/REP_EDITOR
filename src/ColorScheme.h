@@ -6,8 +6,8 @@ using json = nlohmann::json;
 
 class ColorScheme{
     public:
-      map<string,int> Build(string FileName);
+      virtual map<string,int> Build(string FileName);
     private:
-      void InitColor(int Number, string HexaColor);
+      virtual void InitColor(int Number, string HexaColor);
 };
 #endif

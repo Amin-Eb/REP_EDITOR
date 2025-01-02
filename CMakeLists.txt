@@ -55,6 +55,9 @@ target_link_libraries(REP PRIVATE
 )
 target_link_libraries(run_tests PRIVATE
     GTest::gtest_main
+    GTest::GTest
+    GTest::gmock
+    GTest::gmock_main
     nlohmann_json::nlohmann_json
     ${CURSES_LIBRARIES}
     tree-sitter::tree-sitter
@@ -62,9 +65,11 @@ target_link_libraries(run_tests PRIVATE
 )
 
 
-if(CMAKE_BUILD_TYPE MATCHES "Debug")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
-    set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} --coverage")
+if(CMAKE_BUILD_TYPE MATCHES "Release")
+	target_compile_options(REP PRIVATE --coverage)
+    target_link_options(REP PRIVATE --coverage)
+	target_compile_options(run_tests PRIVATE --coverage)
+    target_link_options(run_tests PRIVATE --coverage)
 endif()
 
 enable_testing()
