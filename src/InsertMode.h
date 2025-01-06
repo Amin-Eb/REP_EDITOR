@@ -8,16 +8,15 @@ class Insert {
 	public:
 		void SendKey(int ch, int& CurrentLine, int& x, int& y, Screen& RepScreen,
 				Editor& Rep);
-	private:
-		void Enter(int& CurrentLine, int& x, int& y, Screen& RepScreen,
+		virtual void Enter(int& CurrentLine, int& x, int& y, Screen& RepScreen,
+				Editor& Rep);	
+		virtual void BackSpace(int& CurrentLine, int& x, int& y, Screen& RepScreen,
 				Editor& Rep);
-		void BackSpace(int& CurrentLine, int& x, int& y, Screen& RepScreen,
+		virtual void NewChar(char ch, int& CurrentLine, int& x, int& y, Screen& RepScreen,
 				Editor& Rep);
-		void NewChar(char ch, int& CurrentLine, int& x, int& y, Screen& RepScreen,
+		virtual void LineDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,
 				Editor& Rep);
-		void LineDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,
-				Editor& Rep);
-		void LineUp(int& CurrentLine, int& x, int& y, Screen& RepScreen,
+		virtual void LineUp(int& CurrentLine, int& x, int& y, Screen& RepScreen,
 				Editor& Rep);
 };
 

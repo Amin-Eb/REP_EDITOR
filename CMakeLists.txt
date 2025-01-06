@@ -22,9 +22,7 @@ set(SOURCES
     ${CMAKE_SOURCE_DIR}/src/Screen.cpp
     ${CMAKE_SOURCE_DIR}/src/NormalMode.cpp
     ${CMAKE_SOURCE_DIR}/src/InsertMode.cpp
-    ${CMAKE_SOURCE_DIR}/src/Highlight.cpp
     ${CMAKE_SOURCE_DIR}/src/File.cpp
-    ${CMAKE_SOURCE_DIR}/src/ClipBoard.cpp
     ${CMAKE_SOURCE_DIR}/src/ColorScheme.cpp
     ${CMAKE_SOURCE_DIR}/rep.cpp
 # Replace with your actual source files
@@ -36,9 +34,7 @@ set(TESTS
     ${CMAKE_SOURCE_DIR}/src/Screen.cpp
     ${CMAKE_SOURCE_DIR}/src/NormalMode.cpp
     ${CMAKE_SOURCE_DIR}/src/InsertMode.cpp
-    ${CMAKE_SOURCE_DIR}/src/Highlight.cpp
     ${CMAKE_SOURCE_DIR}/src/File.cpp
-    ${CMAKE_SOURCE_DIR}/src/ClipBoard.cpp
     ${CMAKE_SOURCE_DIR}/src/ColorScheme.cpp
     ${CMAKE_SOURCE_DIR}/tests/Tests.cpp
 )

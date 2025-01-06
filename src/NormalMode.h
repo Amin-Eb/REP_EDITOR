@@ -10,7 +10,6 @@ class Normal {
     void SendKey(int ch, int& CurrentLine, int& x, int& y, Screen& RepScreen,
                    Editor& Rep);
                  
-   private:
     virtual void LineUp(int& CurrentLine, int& x, int& y, Screen& RepScreen,
                 Editor& Rep);
     virtual void LineDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,

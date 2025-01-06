@@ -1,8 +1,8 @@
 #include "Mouse.h"
 using namespace std;
 
-void Mouse::Press(int& x,int& y,int& x2,int& y2,int& CurrentLine,Screen& RepScreen,Editor& Rep,int &mode,Normal& RepNormal){
-    if(getmouse(&event) == OK){
+void Mouse::Press(int& x,int& y,int& x2,int& y2,int& CurrentLine,Screen& RepScreen,Editor& Rep,int &mode,Normal& RepNormal, bool TEST_){
+    if(getmouse(&event) == OK || TEST_){
         auto TimeStart = chrono::high_resolution_clock::now();
         if(event.bstate == 65536)
             RepNormal.SendKey(1, CurrentLine, x, y, RepScreen, Rep);
