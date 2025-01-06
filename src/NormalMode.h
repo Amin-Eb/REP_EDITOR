@@ -13,19 +13,19 @@ class Normal {
    private:
     virtual void LineUp(int& CurrentLine, int& x, int& y, Screen& RepScreen,
                 Editor& Rep);
-    void LineDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,
+    virtual void LineDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,
                   Editor& Rep);
-    void Right(int& CurrentLine, int& x, int& y, Screen& RepScreen,
+    virtual void Right(int& CurrentLine, int& x, int& y, Screen& RepScreen,
                Editor& Rep);
-    void Left(int& CurrentLine, int& x, int& y, Screen& RepScreen, Editor& Rep);
-    void Home(int& CurrentLine, int& x, int& y, Screen& RepScreen, Editor& Rep);
-    void PageUp(int& CurrentLine, int& x, int& y, Screen& RepScreen,
+    virtual void Left(int& CurrentLine, int& x, int& y, Screen& RepScreen, Editor& Rep);
+    virtual void Home(int& CurrentLine, int& x, int& y, Screen& RepScreen, Editor& Rep);
+    virtual void PageUp(int& CurrentLine, int& x, int& y, Screen& RepScreen,
                 Editor& Rep);
-    void PageDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,
+    virtual void PageDown(int& CurrentLine, int& x, int& y, Screen& RepScreen,
                   Editor& Rep);
-    void EndPage(int& CurrentLine, int& x, int& y, Screen& RepScreen,
+    virtual void EndPage(int& CurrentLine, int& x, int& y, Screen& RepScreen,
                  Editor& Rep);
-    void Enter(int& CurrentLine, int& x, int& y, Screen& RepScreen,
+    virtual void Enter(int& CurrentLine, int& x, int& y, Screen& RepScreen,
                Editor& Rep);
 };
 

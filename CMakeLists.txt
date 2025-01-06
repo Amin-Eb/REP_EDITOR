@@ -65,12 +65,15 @@ target_link_libraries(run_tests PRIVATE
 )
 
 
-if(CMAKE_BUILD_TYPE MATCHES "Release")
-	target_compile_options(REP PRIVATE --coverage)
-    target_link_options(REP PRIVATE --coverage)
-	target_compile_options(run_tests PRIVATE --coverage)
-    target_link_options(run_tests PRIVATE --coverage)
-endif()
+target_compile_options(REP PRIVATE --coverage)
+target_link_options(REP PRIVATE --coverage)
+target_compile_options(run_tests PRIVATE --coverage)
+target_link_options(run_tests PRIVATE --coverage)
+set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lgcov")
+
 
 enable_testing()
 add_test(NAME run_tests COMMAND run_tests)

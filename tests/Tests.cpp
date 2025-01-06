@@ -23,7 +23,23 @@ public:
 class MockNormalModeHandler : public Normal {
 public:
     MOCK_METHOD(void, LineUp, (int& CurrentLine, int& x, int& y, Screen& RepScreen,
-                Editor& Rep), (override));    
+                Editor& Rep), (override)); 
+    MOCK_METHOD(void , LineDown, (int& CurrentLine, int& x, int& y, Screen& RepScreen,
+                Editor& Rep), (override));
+    MOCK_METHOD(void , Right, (int& CurrentLine, int& x, int& y, Screen& RepScreen,
+                Editor& Rep), (override));
+    MOCK_METHOD(void, Left, (int& CurrentLine, int& x, int& y, Screen& RepScreen,
+                Editor& Rep), (override)); 
+    MOCK_METHOD(void , Home, (int& CurrentLine, int& x, int& y, Screen& RepScreen,
+                Editor& Rep), (override));
+    MOCK_METHOD(void , PageUp, (int& CurrentLine, int& x, int& y, Screen& RepScreen,
+                Editor& Rep), (override));   
+    MOCK_METHOD(void, PageDown, (int& CurrentLine, int& x, int& y, Screen& RepScreen,
+                Editor& Rep), (override)); 
+    MOCK_METHOD(void , EndPage, (int& CurrentLine, int& x, int& y, Screen& RepScreen,
+                Editor& Rep), (override));
+    MOCK_METHOD(void , Enter, (int& CurrentLine, int& x, int& y, Screen& RepScreen,
+                Editor& Rep), (override));      
 };
 
 Editor Rep;
@@ -40,14 +56,31 @@ TEST(EditorTest, DeleteText) {
     Rep.DeleteLine(0);
     EXPECT_EQ(Rep.Matn[0], "");
 }
-TEST(NormalModeTest, LineUp) {
+TEST(NormalModeTest, SendKeyFunctionality) {
     Editor Rep;
     MockScreenHandler RepScreen;
     MockNormalModeHandler RepNormal;
-    for(int i = 0; i < 40; i ++) Rep.AddLine(i,to_string(i));
     int CurrentLine = 0, y = 0, x = 4;
+
     EXPECT_CALL(RepNormal, LineUp(_,_,_,_,_)).Times(1);
+    EXPECT_CALL(RepNormal, LineDown(_,_,_,_,_)).Times(1);
+    EXPECT_CALL(RepNormal, Right(_,_,_,_,_)).Times(1);
+    EXPECT_CALL(RepNormal, Left(_,_,_,_,_)).Times(1);
+    EXPECT_CALL(RepNormal, Home(_,_,_,_,_)).Times(1);
+    EXPECT_CALL(RepNormal, PageUp(_,_,_,_,_)).Times(1);
+    EXPECT_CALL(RepNormal, PageDown(_,_,_,_,_)).Times(1);
+    EXPECT_CALL(RepNormal, EndPage(_,_,_,_,_)).Times(1);
+    EXPECT_CALL(RepNormal, Enter(_,_,_,_,_)).Times(1);
+
     RepNormal.SendKey(1, CurrentLine, x, y, RepScreen, Rep);
+    RepNormal.SendKey(2, CurrentLine, x, y, RepScreen, Rep);
+    RepNormal.SendKey(3, CurrentLine, x, y, RepScreen, Rep);
+    RepNormal.SendKey(4, CurrentLine, x, y, RepScreen, Rep);
+    RepNormal.SendKey(5, CurrentLine, x, y, RepScreen, Rep);
+    RepNormal.SendKey(6, CurrentLine, x, y, RepScreen, Rep);
+    RepNormal.SendKey(7, CurrentLine, x, y, RepScreen, Rep);
+    RepNormal.SendKey(8, CurrentLine, x, y, RepScreen, Rep);
+    RepNormal.SendKey(9, CurrentLine, x, y, RepScreen, Rep);   
 }
 
 
