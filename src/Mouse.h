@@ -10,7 +10,7 @@ using namespace std;
 class Mouse{
     public:
       MEVENT event;
-      void Press(int& x,int& y,int& x2,int& y2,int& CurrentLine,Screen& RepScreen,Editor& Rep,int& mode, Normal& RepNormal);
+      void Press(int& x,int& y,int& x2,int& y2,int& CurrentLine,Screen& RepScreen,Editor& Rep,int& mode, Normal& RepNormal, bool TEST_);
 };
 
 #endif

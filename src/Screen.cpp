@@ -70,7 +70,7 @@ void Screen::PrintChar(int ScreenLine, int Position, char Character) {
     move(ScreenY, ScreenX);
 }
 
-void Screen::EndScr() {
+Screen::~Screen() {
     endwin();
 }
 

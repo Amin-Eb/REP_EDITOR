@@ -22,15 +22,21 @@ set(SOURCES
     ${CMAKE_SOURCE_DIR}/src/Screen.cpp
     ${CMAKE_SOURCE_DIR}/src/NormalMode.cpp
     ${CMAKE_SOURCE_DIR}/src/InsertMode.cpp
-    ${CMAKE_SOURCE_DIR}/src/Highlight.cpp
     ${CMAKE_SOURCE_DIR}/src/File.cpp
-    ${CMAKE_SOURCE_DIR}/src/ClipBoard.cpp
     ${CMAKE_SOURCE_DIR}/src/ColorScheme.cpp
     ${CMAKE_SOURCE_DIR}/rep.cpp
 # Replace with your actual source files
 )
 set(TESTS
-    ${CMAKE_SOURCE_DIR}/tests/Editor.cpp
+	${CMAKE_SOURCE_DIR}/src/Syntax.cpp
+    ${CMAKE_SOURCE_DIR}/src/Editor.cpp
+    ${CMAKE_SOURCE_DIR}/src/Mouse.cpp
+    ${CMAKE_SOURCE_DIR}/src/Screen.cpp
+    ${CMAKE_SOURCE_DIR}/src/NormalMode.cpp
+    ${CMAKE_SOURCE_DIR}/src/InsertMode.cpp
+    ${CMAKE_SOURCE_DIR}/src/File.cpp
+    ${CMAKE_SOURCE_DIR}/src/ColorScheme.cpp
+    ${CMAKE_SOURCE_DIR}/tests/Tests.cpp
 )
 add_executable(REP ${SOURCES})
 add_executable(run_tests ${TESTS})
@@ -45,6 +51,9 @@ target_link_libraries(REP PRIVATE
 )
 target_link_libraries(run_tests PRIVATE
     GTest::gtest_main
+    GTest::GTest
+    GTest::gmock
+    GTest::gmock_main
     nlohmann_json::nlohmann_json
     ${CURSES_LIBRARIES}
     tree-sitter::tree-sitter
@@ -52,10 +61,15 @@ target_link_libraries(run_tests PRIVATE
 )
 
 
-if(CMAKE_BUILD_TYPE MATCHES "Debug")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
-    set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} --coverage")
-endif()
+target_compile_options(REP PRIVATE --coverage)
+target_link_options(REP PRIVATE --coverage)
+target_compile_options(run_tests PRIVATE --coverage)
+target_link_options(run_tests PRIVATE --coverage)
+set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lgcov")
+
 
 enable_testing()
 add_test(NAME run_tests COMMAND run_tests)

@@ -105,7 +105,6 @@ void Insert::Enter(int& CurrentLine, int& x, int& y, Screen& RepScreen,
     }
     RepScreen.RepSyntax.Build(Rep.Matn, Rep.LN);
     LineDown(CurrentLine, x, y, RepScreen, Rep);
-
 }
 
 void Insert::BackSpace(int& CurrentLine, int& x, int& y, Screen& RepScreen,

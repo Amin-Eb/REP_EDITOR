@@ -50,7 +50,7 @@ int main(int argc, char** argv) {
             continue;
         }
         if(ch == KEY_MOUSE) {
-            RepMouse.Press(x, y, x2, y2, CurrentLine,RepScreen, Rep, mode, RepNormal);
+            RepMouse.Press(x, y, x2, y2, CurrentLine,RepScreen, Rep, mode, RepNormal, 0);
             continue;
         }
         if (ch == KEY_ESC) {
@@ -126,6 +126,5 @@ int main(int argc, char** argv) {
         if (mode == 1)
             RepInsert.SendKey(ch, CurrentLine, x, y, RepScreen, Rep);
     }
-    RepScreen.EndScr();
     exit(0);
 }
