@@ -1,9 +1,11 @@
-pip install --upgrade --force-reinstall conan
+sudo apt install pipx
+pipx install --force conan
+pipx ensurepath
 conan profile detect
 conan install . --output-folder=build --build=missing -s compiler.cppstd=20
-chmod +x build
-mv color.json build/color.json
-mv tree-sitter-cpp.so build/tree-sitter-cpp.so
+sudo chmod +x build
+sudo mv color.json build/color.json
+sudo mv tree-sitter-cpp.so build/tree-sitter-cpp.so
 cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
+sudo cmake .. -DCMAKE_BUILD_TYPE=Release
 sudo make
